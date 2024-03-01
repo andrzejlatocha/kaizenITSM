@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Domain", "kaizenITSM.Domain\kaizenITSM.Domain.csproj", "{33A6EC38-3156-4A3A-BFEA-C57707347C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Services", "kaizenITSM.Services\kaizenITSM.Services.csproj", "{68B8964E-12A5-4B33-85FA-8AFE8A86250F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Api", "kaizenITSM.Api\kaizenITSM.Api.csproj", "{6E728676-9861-437B-9893-3B5740B2CDCB}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33A6EC38-3156-4A3A-BFEA-C57707347C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A6EC38-3156-4A3A-BFEA-C57707347C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A6EC38-3156-4A3A-BFEA-C57707347C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A6EC38-3156-4A3A-BFEA-C57707347C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B8964E-12A5-4B33-85FA-8AFE8A86250F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B8964E-12A5-4B33-85FA-8AFE8A86250F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B8964E-12A5-4B33-85FA-8AFE8A86250F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B8964E-12A5-4B33-85FA-8AFE8A86250F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E728676-9861-437B-9893-3B5740B2CDCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E728676-9861-437B-9893-3B5740B2CDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E728676-9861-437B-9893-3B5740B2CDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E728676-9861-437B-9893-3B5740B2CDCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
