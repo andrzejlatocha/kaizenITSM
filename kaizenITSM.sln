@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Domain", "kaizenITSM.Domain\kaizenITSM.Domain.csproj", "{33A6EC38-3156-4A3A-BFEA-C57707347C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Domain", "kaizenITSM.Domain\kaizenITSM.Domain.csproj", "{33A6EC38-3156-4A3A-BFEA-C57707347C5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Services", "kaizenITSM.Services\kaizenITSM.Services.csproj", "{68B8964E-12A5-4B33-85FA-8AFE8A86250F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Services", "kaizenITSM.Services\kaizenITSM.Services.csproj", "{68B8964E-12A5-4B33-85FA-8AFE8A86250F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Api", "kaizenITSM.Api\kaizenITSM.Api.csproj", "{6E728676-9861-437B-9893-3B5740B2CDCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Api", "kaizenITSM.Api\kaizenITSM.Api.csproj", "{6E728676-9861-437B-9893-3B5740B2CDCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Blazor.Client", "kaizenITSM.Blazor\kaizenITSM.Blazor.Client\kaizenITSM.Blazor.Client.csproj", "{2C3C6443-18D8-4C6E-9B6F-0C654F5FC6D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Blazor", "kaizenITSM.Blazor\kaizenITSM.Blazor\kaizenITSM.Blazor.csproj", "{89EF65CE-335D-4C8F-833B-AC62A46C63A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{6E728676-9861-437B-9893-3B5740B2CDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E728676-9861-437B-9893-3B5740B2CDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E728676-9861-437B-9893-3B5740B2CDCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C3C6443-18D8-4C6E-9B6F-0C654F5FC6D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C3C6443-18D8-4C6E-9B6F-0C654F5FC6D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C3C6443-18D8-4C6E-9B6F-0C654F5FC6D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C3C6443-18D8-4C6E-9B6F-0C654F5FC6D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

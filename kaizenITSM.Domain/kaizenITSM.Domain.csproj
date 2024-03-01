@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Models\" />
+    <Folder Include="Enumerators\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
