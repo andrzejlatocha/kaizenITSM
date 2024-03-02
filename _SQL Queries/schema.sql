@@ -1,0 +1,17 @@
+USE [kaizenITSM]
+GO
+
+CREATE SCHEMA [itsm]
+GO
+
+CREATE SCHEMA [hd]
+GO
+
+CREATE SCHEMA [identity]
+GO
+
+CREATE SCHEMA [dictionary]
+GO
+
+CREATE SCHEMA [faq]
+GO
