@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Blazor.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Blazor", "kaizenITSM.Blazor\kaizenITSM.Blazor\kaizenITSM.Blazor.csproj", "{89EF65CE-335D-4C8F-833B-AC62A46C63A5}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "kaizenITSM.Database", "kaizenITSM.Database\kaizenITSM.Database.sqlproj", "{488A5899-98D4-4354-A02B-573AD2C0EC52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,12 @@ Global
 		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89EF65CE-335D-4C8F-833B-AC62A46C63A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488A5899-98D4-4354-A02B-573AD2C0EC52}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

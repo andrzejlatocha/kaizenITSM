@@ -1,19 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace kaizenITSM.Domain.ViewModels.itsm
 {
     [Table("ObjectsHierarchyTree", Schema = "itsm")]
-	
+
     public class ObjectsHierarchyViewModel
     {
-		[Key]
+        [Key]
         public Guid ID { get; set; }
         public Guid? ParentID { get; set; }
         public int Level { get; set; }

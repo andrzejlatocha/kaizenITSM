@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+var services = builder.Services;
 
-builder.Services.AddAuthorizationCore();
-builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
+services.AddAuthorizationCore();
+services.AddCascadingAuthenticationState();
+
+services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
 await builder.Build().RunAsync();

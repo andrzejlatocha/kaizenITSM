@@ -57,4 +57,11 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="itsm.sql" />
+    <Build Include="hd.sql" />
+    <Build Include="identity.sql" />
+    <Build Include="dictionary.sql" />
+    <Build Include="faq.sql" />
+  </ItemGroup>
 </Project>
