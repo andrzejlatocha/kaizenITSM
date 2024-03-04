@@ -1,7 +1,7 @@
 USE [kaizenITSM]
 GO
 
-CREATE SCHEMA [itsm]
+CREATE SCHEMA [cmdb]
 GO
 
 CREATE SCHEMA [hd]

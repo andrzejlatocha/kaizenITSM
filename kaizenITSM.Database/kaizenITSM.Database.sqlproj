@@ -58,7 +58,7 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="itsm.sql" />
+    <Build Include="cmdb.sql" />
     <Build Include="hd.sql" />
     <Build Include="identity.sql" />
     <Build Include="dictionary.sql" />

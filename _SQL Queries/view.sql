@@ -1,18 +1,18 @@
-CREATE VIEW [itsm].[vObjectsHierarchy]
+CREATE VIEW [cmdb].[vObjectsHierarchy]
 AS
 	 WITH vTemp
 		  AS (SELECT oh.ID
 				   , oh.ParentID
 				   , oh.ChildID
 				   , CAST(oh.ChildID AS VARBINARY(900)) AS Sortkey
-			  FROM itsm.ObjectsHierarchy AS oh
+			  FROM cmdb.ObjectsHierarchy AS oh
 			  WHERE oh.ParentID IS NULL
 			  UNION ALL
 			  SELECT oh.ID
 				   , oh.ParentID
 				   , oh.ChildID
 				   , CAST(vt.Sortkey + CAST(oh.ChildID AS BINARY(4)) AS VARBINARY(900))
-			  FROM itsm.ObjectsHierarchy AS oh INNER JOIN vTemp AS vt ON oh.ParentID = vt.ChildID)
+			  FROM cmdb.ObjectsHierarchy AS oh INNER JOIN vTemp AS vt ON oh.ParentID = vt.ChildID)
 		  SELECT vt.ID
 			   , vt.ParentID
 			   , vt.ChildID
@@ -20,17 +20,17 @@ AS
 		  FROM vTemp AS vt;
 GO
 
-CREATE VIEW [itsm].[vObjectsHierarchyInherit]
+CREATE VIEW [cmdb].[vObjectsHierarchyInherit]
 AS
 	 SELECT DISTINCT 
 			voh1.ChildID AS ID
 		  , voh2.ChildID
-	 FROM itsm.vObjectsHierarchy AS voh1 INNER JOIN itsm.vObjectsHierarchy AS voh2 ON CHARINDEX(voh1.Sortkey, voh2.Sortkey) > 0 --AND voh1.Sortkey <> voh2.Sortkey
-										 INNER JOIN itsm.Objects AS o1 ON voh1.ChildID = o1.ID
-										 INNER JOIN itsm.Objects AS o2 ON voh2.ChildID = o2.ID;
+	 FROM cmdb.vObjectsHierarchy AS voh1 INNER JOIN cmdb.vObjectsHierarchy AS voh2 ON CHARINDEX(voh1.Sortkey, voh2.Sortkey) > 0 --AND voh1.Sortkey <> voh2.Sortkey
+										 INNER JOIN cmdb.Objects AS o1 ON voh1.ChildID = o1.ID
+										 INNER JOIN cmdb.Objects AS o2 ON voh2.ChildID = o2.ID;
 GO
 
-CREATE VIEW [itsm].[vObjectsHierarchyTree]
+CREATE VIEW [cmdb].[vObjectsHierarchyTree]
 AS
 	 SELECT -- root
 	 o.rowguid AS ID
@@ -40,9 +40,9 @@ AS
    , 'images\object\' + LOWER(too.Icon) + '_16.png' AS Icon
    , 0 AS Groups
    , o.ID AS ObjectID
-	 FROM itsm.ObjectsHierarchy AS oh INNER JOIN itsm.Objects AS o ON oh.ChildID = o.ID
+	 FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS o ON oh.ChildID = o.ID
 																	  AND oh.ParentID IS NULL
-									  INNER JOIN itsm.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
+									  INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
 	 UNION ALL
 	 SELECT -- objects tree
 	 co.rowguid AS ID
@@ -52,10 +52,10 @@ AS
    , 'images\object\' + LOWER(tooco.Icon) + '_16.png' AS Icon
    , 1
    , co.ID AS ObjectID
-	 FROM itsm.ObjectsHierarchy AS oh INNER JOIN itsm.Objects AS po ON oh.ParentID = po.ID
-									  INNER JOIN itsm.TypeOfObjects AS toopo ON po.TypeOfObjectID = toopo.ID
-									  INNER JOIN itsm.Objects AS co ON oh.ChildID = co.ID
-									  INNER JOIN itsm.TypeOfObjects AS tooco ON co.TypeOfObjectID = tooco.ID
+	 FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS po ON oh.ParentID = po.ID
+									  INNER JOIN cmdb.TypeOfObjects AS toopo ON po.TypeOfObjectID = toopo.ID
+									  INNER JOIN cmdb.Objects AS co ON oh.ChildID = co.ID
+									  INNER JOIN cmdb.TypeOfObjects AS tooco ON co.TypeOfObjectID = tooco.ID
 	 UNION ALL
 	 SELECT -- hardware root
 	 '00000000-0000-0000-0000-000000000001' AS ID
@@ -74,7 +74,7 @@ AS
    , 'images\object\' + LOWER(too.Icon) + '_16.png'
    , 3
    , -1
-	 FROM itsm.TypeOfObjects AS too
+	 FROM cmdb.TypeOfObjects AS too
 	 WHERE too.IsHardware = 1
 	 UNION ALL
 	 SELECT -- objects for type
@@ -85,7 +85,7 @@ AS
    , 'images\object\' + LOWER(too.Icon) + '_16.png'
    , 4
    , o.ID AS ObjectID
-	 FROM itsm.Objects AS o INNER JOIN itsm.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
+	 FROM cmdb.Objects AS o INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
 																	AND too.IsHardware = 1
 	 UNION ALL
 	 SELECT -- Active Directory root
@@ -116,7 +116,7 @@ AS
    , -1;
 GO
 
-CREATE VIEW [itsm].[vObjectsDetailList]
+CREATE VIEW [cmdb].[vObjectsDetailList]
 AS
 	 SELECT o.ID
 		  , o.Name
@@ -125,10 +125,10 @@ AS
 		  , 'images\object\' + LOWER(too.Icon) + '_80.png' AS Icon
 		  , too.IsHardware
 		  , o.STATUS
-	 FROM itsm.Objects AS o INNER JOIN itsm.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID;
+	 FROM cmdb.Objects AS o INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID;
 GO
 
-CREATE VIEW [itsm].[vObjectPropertiesList]
+CREATE VIEW [cmdb].[vObjectPropertiesList]
 AS
 	 SELECT op.ID
 		  , op.ObjectID
@@ -144,10 +144,10 @@ AS
 		  , NULL AS Object
 		  , 'none' AS Source
 		  , STRING_AGG(cop.Name, ',') AS Category
-	 FROM itsm.ObjectProperties AS op INNER JOIN itsm.ParametersType AS pt ON op.ParameterTypeID = pt.ID
+	 FROM cmdb.ObjectProperties AS op INNER JOIN cmdb.ParametersType AS pt ON op.ParameterTypeID = pt.ID
 																			  AND pt.Deleted = 0
-									  LEFT OUTER JOIN itsm.ParameterCategories AS pc ON pt.ID = pc.ParameterTypeID
-									  LEFT OUTER JOIN itsm.CategoryOfParameters AS cop ON pc.CategoryOfParametersID = cop.ID
+									  LEFT OUTER JOIN cmdb.ParameterCategories AS pc ON pt.ID = pc.ParameterTypeID
+									  LEFT OUTER JOIN cmdb.CategoryOfParameters AS cop ON pc.CategoryOfParametersID = cop.ID
 	 GROUP BY op.ID
 			, op.ObjectID
 			, op.ParameterTypeID
@@ -174,13 +174,13 @@ AS
 		  , o.Name AS Object
 		  , 'inherit' AS Source
 		  , STRING_AGG(cop.Name, ',') AS Category
-	 FROM itsm.vObjectsHierarchyInherit AS vohi INNER JOIN itsm.Objects AS o ON vohi.ID = o.ID
-												INNER JOIN itsm.ObjectProperties AS op ON o.ID = op.ObjectID
-												INNER JOIN itsm.ParametersType AS pt ON op.ParameterTypeID = pt.ID
+	 FROM cmdb.vObjectsHierarchyInherit AS vohi INNER JOIN cmdb.Objects AS o ON vohi.ID = o.ID
+												INNER JOIN cmdb.ObjectProperties AS op ON o.ID = op.ObjectID
+												INNER JOIN cmdb.ParametersType AS pt ON op.ParameterTypeID = pt.ID
 																						AND pt.Deleted = 0
 																						AND pt.Inherit = 1
-												LEFT OUTER JOIN itsm.ParameterCategories AS pc ON pt.ID = pc.ParameterTypeID
-												LEFT OUTER JOIN itsm.CategoryOfParameters AS cop ON pc.CategoryOfParametersID = cop.ID
+												LEFT OUTER JOIN cmdb.ParameterCategories AS pc ON pt.ID = pc.ParameterTypeID
+												LEFT OUTER JOIN cmdb.CategoryOfParameters AS cop ON pc.CategoryOfParametersID = cop.ID
 	 GROUP BY op.ID
 			, vohi.ChildID
 			, op.ParameterTypeID
