@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace kaizenITSM.Domain.Entities.itsm
+namespace kaizenITSM.Domain.Entities.cmdb
 {
-    [Table("Objects", Schema = "itsm")]
+    [Table("Objects", Schema = "cmdb")]
     public class Objects : AuditableEntity
     {
         [Key]

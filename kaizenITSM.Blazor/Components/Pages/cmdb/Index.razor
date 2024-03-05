@@ -1,0 +1,163 @@
+﻿@page "/cmdb"
+
+@rendermode RenderMode.InteractiveServer
+
+@inject HttpClient _httpClient;
+
+@using kaizenITSM.Domain.Entities
+@using kaizenITSM.Domain.Entities.cmdb
+@using kaizenITSM.Domain.ViewModels
+@using kaizenITSM.Domain.ViewModels.cmdb
+
+<div class="row">
+    <div class="col-12">
+@*         <div class="row">
+            <div class="col-12">
+                <FluentBreadcrumb>
+                    <FluentBreadcrumbItem Href="#">
+                        Contoso Systems
+                    </FluentBreadcrumbItem>
+                    <FluentBreadcrumbItem Href="#">
+                        Budynek Zarządu
+                    </FluentBreadcrumbItem>
+                </FluentBreadcrumb>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="d-inline-block">
+                    <img id="tree" src="images\object\building_40.png" />
+                </div>
+                <div class="d-inline-block">
+                    <h2>Budynek zarządu</h2>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="float-end ms-2 me-2">
+                    <a onclick="@TreeView"><img id="tree" src="images\view\tree-24.png" /></a>
+                    <FluentTooltip Anchor="tree">
+                        Widok hierarchiczny
+                    </FluentTooltip>
+                </div>
+                <div class="float-end ms-2">
+                    <a onclick="@CardView"><img id="card" src="images\view\card-24.png" /></a>
+                    <FluentTooltip Anchor="card">
+                        Widok kart
+                    </FluentTooltip>
+                </div>
+                <div class="float-end ms-2">
+                    <a onclick="@ListView"><img id="list" src="images\view\list-24.png" /></a>
+                    <FluentTooltip Anchor="list">
+                        Widok listy
+                    </FluentTooltip>
+                </div>
+                <div class="float-end ms-2">
+                    <select name="cars" id="cars" style="width: 200px;">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <FluentButton Appearance="Appearance.Outline">Nowy</FluentButton>
+                <FluentButton Appearance="Appearance.Outline">Popraw</FluentButton>
+                <FluentButton Appearance="Appearance.Outline">Usuń</FluentButton>
+            </div>
+        </div> *@
+        <div class="row mt-2">
+            <div class="col-12">
+                @if (showTree)
+                {
+                    <div class="row">
+                        <div class="col-3">
+                            @if (objects == null)
+                            {
+                                <LoadSmall />
+                            }
+                            else
+                            {
+                                <RadzenTree Data=@objects Style="width: 100%; height: 100%">
+                                    <RadzenTreeLevel Text=@GetTextForNode Template=@NodeTemplate Expanded=@ShouldExpand ChildrenProperty="Children"
+                                                     HasChildren="@(data => ((ObjectsHierarchyViewModel)data).Children != null)" />
+                                </RadzenTree>
+                            }
+                        </div>
+                        <div class="col-9">
+                            Szczegóły wybranej gałęzi drzewa
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    IEnumerable<ObjectsHierarchyViewModel> objects { get; set; }
+    ObjectsDetailViewModel? objectDetail { get; set; } = new ObjectsDetailViewModel();
+    IEnumerable<ObjectPropertiesViewModel> objectProperties { get; set; }
+
+    private bool showList = false;
+    private bool showCard = false;
+    private bool showTree = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        objects = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyViewModel>>($"/api/ObjectsHierarchy/Select");
+    }
+
+    void LoadNode(TreeExpandEventArgs args)
+    {
+        var nodeValue = args.Value as string;
+    }
+
+    string GetTextForNode(object data)
+    {
+        return (string)(data as ObjectsHierarchyViewModel).Name;
+    }
+
+    bool ShouldExpand(object data)
+    {
+        var objects = data as ObjectsHierarchyViewModel;
+
+        return objects.ObjectsHierarchyViewModelID == null;
+    }
+
+    RenderFragment<RadzenTreeItem> NodeTemplate = (context) => __builder =>
+     {
+         string? name = (context.Value as ObjectsHierarchyViewModel).Name;
+         string? icon = (context.Value as ObjectsHierarchyViewModel).Icon;
+
+        <div class="row">
+            <div class="col-12">
+                <img src="@icon" />
+                <span>@name</span>
+            </div>
+        </div>
+     };
+
+    void ListView()
+    {
+        showList = true;
+        showCard = false;
+        showTree = false;
+    }
+
+    void CardView()
+    {
+        showList = false;
+        showCard = true;
+        showTree = false;
+    }
+
+    void TreeView()
+    {
+        showList = false;
+        showCard = false;
+        showTree = true;
+    }
+}

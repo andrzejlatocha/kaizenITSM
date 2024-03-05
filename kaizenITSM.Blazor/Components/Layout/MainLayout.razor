@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+
+<div>
+    <FluentLayout>
+        <FluentHeader>
+            <MainHeader />
+        </FluentHeader>
+        <FluentStack Orientation="Microsoft.FluentUI.AspNetCore.Components.Orientation.Horizontal" Width="100%">
+            <FluentNavMenu Width="50">
+                <FluentNavLink Icon="@(new Icons.Regular.Size48.Home())" Href="/"></FluentNavLink>
+                <FluentNavLink Icon="@(new Icons.Regular.Size48.Headset())" Href="/hd"></FluentNavLink>
+                <FluentNavLink Icon="@(new Icons.Regular.Size48.DesktopPulse())" Href="/cmdb"></FluentNavLink>
+                <FluentNavLink Icon="@(new Icons.Regular.Size48.Document())" Href="/faq"></FluentNavLink>
+            </FluentNavMenu>
+            <FluentBodyContent>
+                <div class="row vh-max">
+                    @Body
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+    </FluentLayout>
+</div>
+<footer class="mt-auto">
+    <Footer />
+</footer>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>

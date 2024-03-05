@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <base href="/" />
+
+    <link rel="stylesheet" href="kaizenITSM.Blazor.styles.css" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/site.css" />
+
+    <link href="_content/Radzen.Blazor/css/software.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <Routes @rendermode="InteractiveServer" />
+
+    <script src="_framework/blazor.web.js"></script>
+</body>
+
+</html>
