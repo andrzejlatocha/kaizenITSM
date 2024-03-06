@@ -5,22 +5,14 @@ using System.Linq;
 
 namespace kaizenITSM.Domain.ViewModels.cmdb
 {
-    [Table("vObjectsHierarchyTree", Schema = "cmdb")]
-
-    public class ObjectsHierarchyViewModel
+    [Table("vObjectsHierarchyDetail", Schema = "cmdb")]
+    public class ObjectsHierarchyDetailViewModel
     {
         [Key]
         public Guid ID { get; set; }
         public Guid? ObjectsHierarchyViewModelID { get; set; }
-        //public int Level { get; set; }
         public string? Name { get; set; }
         public string? Icon { get; set; }
-        public string? IconBig { get; set; }
-        //public int Groups { get; set; }
         public int ObjectID { get; set; }
-        public bool IsExpanded { get; set; }
-        public string Type { get; set; }
-
-        public ICollection<ObjectsHierarchyViewModel>? Children { get; set; } = new List<ObjectsHierarchyViewModel>();
     }
 }

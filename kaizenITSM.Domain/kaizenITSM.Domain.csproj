@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Enumerators\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>

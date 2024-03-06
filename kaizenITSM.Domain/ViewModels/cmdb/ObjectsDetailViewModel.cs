@@ -1,16 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace kaizenITSM.Domain.ViewModels.cmdb
-{	
+{
     [Table("vObjectsDetailList", Schema = "cmdb")]
     public class ObjectsDetailViewModel
     {
+        public ObjectsDetailViewModel()
+        {
+            ID = -1;
+            Name = "";
+            Type = "";
+            Icon = @"images\object\empty_40.png";
+        }
+
+        public void ResetData()
+        {
+            ID = -1;
+            Name = "";
+            Type = "";
+            Icon = @"images\object\empty_40.png";
+        }
+
         [Key]
         public int ID { get; set; }
         public string? Name { get; set; }
