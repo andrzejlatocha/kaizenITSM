@@ -14,5 +14,6 @@ namespace kaizenITSM.Domain.ViewModels.cmdb
         public string? Name { get; set; }
         public string? Icon { get; set; }
         public int ObjectID { get; set; }
+        public string Type { get; set; }
     }
 }

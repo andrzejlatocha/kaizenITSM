@@ -11,6 +11,5 @@ namespace kaizenITSM.Domain.Common
         public DateTime? ModifyingDate { get; set; } = DateTime.Now;
         public int? ModifyingUserID { get; set; }
         public bool? Deleted { get; set; } = false;
-        public Guid? rowguid { get; set; } = Guid.NewGuid();
     }
 }
