@@ -33,87 +33,87 @@ GO
 CREATE VIEW [cmdb].[vObjectsHierarchyTree]
 AS
 	 SELECT -- root
-	 o.rowguid AS ID
-   , NULL AS ParentID
-   , o.ID AS Level
-   , o.Name
-   , 'images\object\' + LOWER(too.Icon) + '_16.png' AS Icon
-   , 0 AS Groups
-   , o.ID AS ObjectID
-	 FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS o ON oh.ChildID = o.ID
-																	  AND oh.ParentID IS NULL
-									  INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
+		 o.rowguid AS ID
+	   , NULL AS ObjectsHierarchyViewModelID
+	   , o.ID AS Level
+	   , o.Name
+	   , 'images\object\' + LOWER(too.Icon) + '_16.png' AS Icon
+	   , 'images\object\' + LOWER(too.Icon) + '_80.png' AS IconBig
+	   , 0 AS Groups
+	   , o.ID AS ObjectID
+	   , CAST(1 AS BIT) AS IsExpanded
+	   , too.Name AS Type
+	FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS o ON oh.ChildID = o.ID
+																		  AND oh.ParentID IS NULL
+										  INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
 	 UNION ALL
 	 SELECT -- objects tree
-	 co.rowguid AS ID
-   , po.rowguid AS ParentID
-   , po.ID AS Level
-   , co.Name
-   , 'images\object\' + LOWER(tooco.Icon) + '_16.png' AS Icon
-   , 1
-   , co.ID AS ObjectID
+		 co.rowguid AS ID
+	   , po.rowguid AS ParentID
+	   , po.ID AS Level
+	   , co.Name
+	   , 'images\object\' + LOWER(tooco.Icon) + '_16.png' AS Icon
+	   , 'images\object\' + LOWER(tooco.Icon) + '_80.png' AS IconBig
+	   , 1
+	   , co.ID AS ObjectID
+	   , CAST(0 AS BIT)
+	   , tooco.Name
 	 FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS po ON oh.ParentID = po.ID
 									  INNER JOIN cmdb.TypeOfObjects AS toopo ON po.TypeOfObjectID = toopo.ID
+																				AND toopo.ShowInTree = 1
 									  INNER JOIN cmdb.Objects AS co ON oh.ChildID = co.ID
 									  INNER JOIN cmdb.TypeOfObjects AS tooco ON co.TypeOfObjectID = tooco.ID
+																				AND tooco.ShowInTree = 1
 	 UNION ALL
 	 SELECT -- hardware root
-	 '00000000-0000-0000-0000-000000000001' AS ID
-   , NULL AS ParentID
-   , 0 AS Level
-   , 'Hardware store' AS Name
-   , 'images\object\hardware_store_16.png' AS Icon
-   , 2 AS Groups
-   , -1
+		 '00000000-0000-0000-0000-000000000001' AS ID
+	   , NULL AS ParentID
+	   , 0 AS Level
+	   , 'Hardware store' AS Name
+	   , 'images\object\hardware_store_16.png' AS Icon
+	   , 'images\object\hardware_store_80.png' AS IconBig
+	   , 2 AS Groups
+	   , -1
+	   , CAST(0 AS BIT)
+	   , 'Hardware store'
 	 UNION ALL
 	 SELECT -- object types for hardware root
-	 too.rowguid
-   , '00000000-0000-0000-0000-000000000001'
-   , 0 AS Level
-   , too.Name
-   , 'images\object\' + LOWER(too.Icon) + '_16.png'
-   , 3
-   , -1
+		 too.rowguid
+	   , '00000000-0000-0000-0000-000000000001'
+	   , 0 AS Level
+	   , too.Name
+	   , 'images\object\' + LOWER(too.Icon) + '_16.png'
+	   , 'images\object\' + LOWER(too.Icon) + '_80.png'
+	   , 3
+	   , - too.ID
+	   , CAST(0 AS BIT)
+	   , too.Name
 	 FROM cmdb.TypeOfObjects AS too
 	 WHERE too.IsHardware = 1
 	 UNION ALL
-	 SELECT -- objects for type
-	 NEWID()
-   , too.rowguid
-   , 0 AS Level
-   , o.Name
-   , 'images\object\' + LOWER(too.Icon) + '_16.png'
-   , 4
-   , o.ID AS ObjectID
-	 FROM cmdb.Objects AS o INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
-																	AND too.IsHardware = 1
-	 UNION ALL
-	 SELECT -- Active Directory root
-	 '99999999-9999-9999-9999-999999999991' AS ID
-   , NULL AS ParentID
-   , 0 AS Level
-   , 'Loaded from Active Directory' AS Name
-   , 'images\object\active_directory_16.png' AS Icon
-   , 5 AS Groups
-   , -1
-	 UNION ALL
 	 SELECT -- Retired assets root
-	 '99999999-9999-9999-9999-999999999992' AS ID
-   , NULL AS ParentID
-   , 0 AS Level
-   , 'Retired assets' AS Name
-   , 'images\object\retired_assets_16.png' AS Icon
-   , 5 AS Groups
-   , -1
+		 '99999999-9999-9999-9999-999999999992' AS ID
+	   , NULL AS ParentID
+	   , 0 AS Level
+	   , 'Retired assets' AS Name
+	   , 'images\object\retired_assets_16.png' AS Icon
+	   , 'images\object\retired_assets_80.png' AS Icon
+	   , 5 AS Groups
+	   , -1
+	   , CAST(0 AS BIT)
+	   , 'Retired assets'
 	 UNION ALL
 	 SELECT -- Recycle bin root
-	 '99999999-9999-9999-9999-999999999993' AS ID
-   , NULL AS ParentID
-   , 0 AS Level
-   , 'Recycle bin' AS Name
-   , 'images\object\recycle_bin_16.png' AS Icon
-   , 5 AS Groups
-   , -1;
+		 '99999999-9999-9999-9999-999999999993' AS ID
+	   , NULL AS ParentID
+	   , 0 AS Level
+	   , 'Recycle bin' AS Name
+	   , 'images\object\recycle_bin_16.png' AS Icon
+	   , 'images\object\recycle_bin_80.png' AS IconBig
+	   , 5 AS Groups
+	   , -1
+	   , CAST(0 AS BIT)
+	   , 'Recycle bin';
 GO
 
 CREATE VIEW [cmdb].[vObjectsDetailList]
@@ -194,4 +194,51 @@ AS
 			, pt.Inherit
 			, o.Name;
 GO
+
+CREATE VIEW [cmdb].[vObjectsHierarchyDetail]
+AS
+	 SELECT 
+		 co.rowguid AS ID
+	   , po.rowguid AS ParentID
+	   , co.Code
+	   , co.Name
+	   , co.TagNumber
+	   , tooco.Name AS Type
+	   , os.Name AS ObjectState
+	   , 'images\object\' + LOWER(tooco.Icon) + '_16.png' AS Icon
+	   , co.ID AS ObjectID
+	 FROM cmdb.ObjectsHierarchy AS oh INNER JOIN cmdb.Objects AS po ON oh.ParentID = po.ID
+									  INNER JOIN cmdb.TypeOfObjects AS toopo ON po.TypeOfObjectID = toopo.ID
+									  INNER JOIN cmdb.Objects AS co ON oh.ChildID = co.ID
+									  INNER JOIN cmdb.TypeOfObjects AS tooco ON co.TypeOfObjectID = tooco.ID
+									  LEFT OUTER JOIN cmdb.ObjectStates AS os ON co.ObjectStateID = os.ID
+	 UNION ALL
+	 SELECT -- object types for hardware root
+		 too.rowguid
+	   , '00000000-0000-0000-0000-000000000001'
+	   , NULL
+	   , too.Name
+	   , NULL
+	   , NULL
+	   , NULL
+	   , 'images\object\' + LOWER(too.Icon) + '_16.png'
+	   , too.ID
+	 FROM cmdb.TypeOfObjects AS too
+	 WHERE too.IsHardware = 1
+	 UNION ALL
+	 SELECT -- object types for hardware root
+		 o.rowguid
+	   , too.rowguid
+	   , o.Code
+	   , o.Name
+	   , o.TagNumber
+	   , too.Name
+	   , os.Name
+	   , 'images\object\' + LOWER(too.Icon) + '_16.png'
+	   , o.ID
+	 FROM cmdb.Objects AS o INNER JOIN cmdb.TypeOfObjects AS too ON o.TypeOfObjectID = too.ID
+	 LEFT OUTER JOIN cmdb.ObjectStates AS os ON o.ObjectStateID = os.ID
+	 WHERE too.IsHardware = 1
+GO
+
 

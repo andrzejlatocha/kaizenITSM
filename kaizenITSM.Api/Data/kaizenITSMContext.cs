@@ -26,6 +26,7 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<Objects> Objects { get; set; }
 
         // ViewModels
+        public virtual DbSet<ObjectsHierarchyDetailViewModel> ObjectsHierarchyDetailViewModel { get; set; }
         public virtual DbSet<ObjectsHierarchyViewModel> ObjectsHierarchyViewModel { get; set; }
         public virtual DbSet<ObjectsDetailViewModel> ObjectsDetailViewModel { get; set; }
         public virtual DbSet<ObjectPropertiesViewModel> ObjectPropertiesViewModel { get; set; }

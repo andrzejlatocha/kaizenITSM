@@ -1,3 +1,26 @@
+CREATE TABLE [cmdb].[ObjectStates](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Name] [varchar](50) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[Status] [char](1) NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_ObjectStates] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [cmdb].[ObjectStates] ADD  CONSTRAINT [DF_ObjectStates_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [cmdb].[ObjectStates] ADD  CONSTRAINT [DF_ObjectStates_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
 CREATE TABLE [cmdb].[TypeOfObjects](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](150) NULL,
@@ -220,18 +243,20 @@ GO
 
 CREATE TABLE [cmdb].[Objects](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ParentID] [int] NULL,
+	[ChildID] [int] NULL,
 	[Code] [nvarchar](50) NULL,
 	[Name] [varchar](500) NULL,
+	[ObjectStateID] [int] NULL,
 	[TypeOfObjectID] [int] NULL,
+	[TagNumber] [varchar](50) NULL,
 	[CreationDate] [datetime] NULL,
 	[CreationUserID] [int] NULL,
 	[ModifyingDate] [datetime] NULL,
 	[ModifyingUserID] [int] NULL,
-	[Status] [char](1) NULL,
 	[Deleted] [bit] NULL,
+	[Status] [char](1) NULL,
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
-	[ParentID] [int] NULL,
-	[ChildID] [int] NULL,
  CONSTRAINT [PK_Objects] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -251,13 +276,20 @@ GO
 ALTER TABLE [cmdb].[Objects] ADD  CONSTRAINT [DF_Objects_ModifyingUserID]  DEFAULT ((0)) FOR [ModifyingUserID]
 GO
 
-ALTER TABLE [cmdb].[Objects] ADD  CONSTRAINT [DF_Objects_Status]  DEFAULT ('A') FOR [Status]
-GO
-
 ALTER TABLE [cmdb].[Objects] ADD  CONSTRAINT [DF_Objects_Deleted]  DEFAULT ((0)) FOR [Deleted]
 GO
 
+ALTER TABLE [cmdb].[Objects] ADD  CONSTRAINT [DF_Objects_Status]  DEFAULT ('A') FOR [Status]
+GO
+
 ALTER TABLE [cmdb].[Objects] ADD  CONSTRAINT [DF_Objects_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [cmdb].[Objects]  WITH CHECK ADD  CONSTRAINT [FK_Objects_Objects] FOREIGN KEY([ObjectStateID])
+REFERENCES [cmdb].[ObjectStates] ([ID])
+GO
+
+ALTER TABLE [cmdb].[Objects] CHECK CONSTRAINT [FK_Objects_Objects]
 GO
 
 ALTER TABLE [cmdb].[Objects]  WITH CHECK ADD  CONSTRAINT [FK_Objects_TypeOfObjects] FOREIGN KEY([TypeOfObjectID])

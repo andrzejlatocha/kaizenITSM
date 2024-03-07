@@ -25,5 +25,14 @@ namespace kaizenITSM.Api.Controllers.cmdb
 
             return result;
         }
+
+        // GET: api/ObjectsHierarchy
+        [HttpGet("{ParentID}")]
+        public async Task<IEnumerable<ObjectsHierarchyDetailViewModel>> Select(Guid ParentID)
+        {
+            var result = await _context.ObjectsHierarchyDetailViewModel.Where(w => w.ParentID == ParentID).ToListAsync();
+
+            return result;
+        }
     }
 }

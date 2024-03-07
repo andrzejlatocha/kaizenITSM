@@ -73,3 +73,9 @@ html, body {
     height: 100vh !important;
 }
 
+.grid-empty-template {
+    color: lightgrey;
+    font-size: 24px;
+    text-align: center;
+    margin: 2rem;
+}

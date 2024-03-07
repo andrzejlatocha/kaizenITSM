@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="row mt-2">
             <div class="col-12">
-                <div class="row">
+                <div class="row me-1">
                     <div class="col-2">
                         @if (objects == null)
                         {
@@ -66,7 +66,27 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-12">
-                                Szczegóły wybranej gałęzi drzewa - indentyfikator @objectID
+                                <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowFiltering="true" 
+                                                AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectLists" Density="Density.Compact" 
+                                                SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" AllowColumnResize="true" AllowColumnReorder="true" 
+                                                AllowColumnPicking="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
+                                                AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
+                                    <EmptyTemplate>
+                                        <p class="grid-empty-template">Brak danych.</p>
+                                    </EmptyTemplate>
+                                    <Columns>
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ID" Visible="false" />
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Icon" Title=" " Frozen="true" Width="40px">
+                                            <Template Context="data">
+                                                <RadzenImage Path="@String.Format(@"{0}", data.Icon)" />
+                                            </Template>
+                                        </RadzenDataGridColumn>
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Code" Width="150px" />
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Name" />
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ObjectState" Width="150px" />
+                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="TagNumber" Width="150px" />
+                                    </Columns>
+                                </RadzenDataGrid>
                             </div>
                         </div>                        
                     </div>
@@ -77,14 +97,17 @@
 </div>
 
 @code {
+    RadzenDataGrid<ObjectsHierarchyDetailViewModel> grid;
+    IList<ObjectsHierarchyDetailViewModel>? selectedItem;
+
     IEnumerable<ObjectsHierarchyViewModel> objects;
-    ObjectsDetailViewModel? objectDetail { get; set; } = new ObjectsDetailViewModel();
-    //IEnumerable<ObjectPropertiesViewModel> objectProperties { get; set; }
+    IEnumerable<ObjectsHierarchyDetailViewModel> objectLists;
 
     private bool showList = true;
     private bool showCard = false;
 
     int? objectID;
+    Guid id;
     private string? objectType;
     private string? objectIcon = @"images\object\empty_80.png";
     private string? objectName;
@@ -92,7 +115,6 @@
     protected override async Task OnInitializedAsync()
     {
         objects = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyViewModel>>($"/api/ObjectsHierarchy/Select");
-        objectDetail.ResetData();
     }
 
     void LoadNode(TreeExpandEventArgs args)
@@ -112,7 +134,7 @@
         return objects.IsExpanded;
     }
 
-    void OnSelectionChange(TreeEventArgs args)
+    async Task OnSelectionChange(TreeEventArgs args)
     {
         ObjectsHierarchyViewModel? d = args.Value as ObjectsHierarchyViewModel;
 
@@ -120,6 +142,7 @@
         {
             d.IsExpanded = true;
 
+            id = d.ID;
             objectID = d.ObjectID;
             objectName = d.Name;
             objectIcon = d.IconBig;
@@ -127,14 +150,8 @@
 
             if (objectID != null)
             {
-                //objectDetail = Task.Run(async () => await _httpClient.GetFromJsonAsync<ObjectsDetailViewModel>($"/api/ObjectsDetail/Get/{objectID}")).Result;
-                //objectProperties = Task.Run(async () => await _httpClient.GetFromJsonAsync<IEnumerable<ObjectPropertiesViewModel>>($"/api/ObjectProperties/SelectByObject/{objectID}")).Result;
+                objectLists = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyDetailViewModel>>($"/api/ObjectsHierarchy/Select/{id}");
             }
-            // else
-            // {
-            //     objectDetail.ResetData();
-            // }
-
         }
     }
 
