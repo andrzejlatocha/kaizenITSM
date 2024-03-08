@@ -11,7 +11,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "kaizenITSM.Database", "kaiz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Services", "kaizenITSM.Services\kaizenITSM.Services.csproj", "{62E0F92F-45B0-4E1B-957C-36811C842DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kaizenITSM.Blazor", "kaizenITSM.Blazor\kaizenITSM.Blazor.csproj", "{62D8713A-73E4-49F4-9A3B-60351558E7FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kaizenITSM.Blazor", "kaizenITSM.Blazor\kaizenITSM.Blazor.csproj", "{62D8713A-73E4-49F4-9A3B-60351558E7FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

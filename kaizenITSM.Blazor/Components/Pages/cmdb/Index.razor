@@ -9,7 +9,15 @@
 @using kaizenITSM.Domain.ViewModels
 @using kaizenITSM.Domain.ViewModels.cmdb
 
-<div class="row ms-2">
+<table style="width: 100%; border-color: red; border-width: 2px; ">
+    <tr>
+        <th>
+
+        </th>
+    </tr>
+</table>
+
+<div cla    ss="row ms-2">
     <div class="col-12">
         <div class="row mt-2">
             <div class="col-12">
@@ -66,27 +74,42 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-12">
-                                <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowFiltering="true" 
-                                                AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectLists" Density="Density.Compact" 
-                                                SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" AllowColumnResize="true" AllowColumnReorder="true" 
-                                                AllowColumnPicking="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
-                                                AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
-                                    <EmptyTemplate>
-                                        <p class="grid-empty-template">Brak danych.</p>
-                                    </EmptyTemplate>
-                                    <Columns>
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ID" Visible="false" />
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Icon" Title=" " Frozen="true" Width="40px">
-                                            <Template Context="data">
-                                                <RadzenImage Path="@String.Format(@"{0}", data.Icon)" />
-                                            </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Code" Width="150px" />
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Name" />
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ObjectState" Width="150px" />
-                                        <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="TagNumber" Width="150px" />
-                                    </Columns>
-                                </RadzenDataGrid>
+                                @if (objectList == null)
+                                {
+                                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Style="width: 100%; height: 2px;" />
+                                }
+                                else
+                                {
+                                    if (showList)
+                                    {
+                                        <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowFiltering="true" 
+                                                        AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectList" Density="Density.Compact" 
+                                                        SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" AllowColumnResize="true" AllowColumnReorder="true" 
+                                                        AllowColumnPicking="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
+                                                        AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
+                                            <EmptyTemplate>
+                                                <p class="grid-empty-template">Brak danych.</p>
+                                            </EmptyTemplate>
+                                            <Columns>
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ID" Visible="false" />
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Icon" Title=" " Frozen="true" Width="40px">
+                                                    <Template Context="data">
+                                                        <RadzenImage Path="@String.Format(@"{0}", data.Icon)" />
+                                                    </Template>
+                                                </RadzenDataGridColumn>
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Code" Width="150px" />
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="Name" />
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="ObjectState" Width="150px" />
+                                                <RadzenDataGridColumn TItem="ObjectsHierarchyDetailViewModel" Property="TagNumber" Width="150px" />
+                                            </Columns>
+                                        </RadzenDataGrid>
+                                    }
+
+                                    if (showCard)
+                                    {
+                                        <p>Widok KART</p>
+                                    }
+                                }
                             </div>
                         </div>                        
                     </div>
@@ -101,7 +124,7 @@
     IList<ObjectsHierarchyDetailViewModel>? selectedItem;
 
     IEnumerable<ObjectsHierarchyViewModel> objects;
-    IEnumerable<ObjectsHierarchyDetailViewModel> objectLists;
+    IEnumerable<ObjectsHierarchyDetailViewModel> objectList;
 
     private bool showList = true;
     private bool showCard = false;
@@ -150,7 +173,7 @@
 
             if (objectID != null)
             {
-                objectLists = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyDetailViewModel>>($"/api/ObjectsHierarchy/Select/{id}");
+                objectList = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyDetailViewModel>>($"/api/ObjectsHierarchy/Select/{id}");
             }
         }
     }
