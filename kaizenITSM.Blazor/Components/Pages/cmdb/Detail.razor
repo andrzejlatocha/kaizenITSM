@@ -1,5 +1,17 @@
-﻿<h3>Detail</h3>
+﻿@page "/cmdb/detail/{ID:int}"
+
+@rendermode RenderMode.InteractiveServer
+
+@inject HttpClient _httpClient;
+
+<h3>Detail</h3>
 
 @code {
+    [Parameter]
+    public int ID { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
 }

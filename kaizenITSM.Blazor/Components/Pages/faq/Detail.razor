@@ -1,17 +1,17 @@
-﻿@page "/cmdb/delete/{ID:int}"
+﻿@page "/faq/detail/{ID:int}"
 
 @rendermode RenderMode.InteractiveServer
 
 @inject HttpClient _httpClient;
 
-<h3>Delete</h3>
+<h3>Detail</h3>
 
 @code {
     [Parameter]
-    public int ID { get; set; }
+    public int ID { get; set; } 
 
     protected override async Task OnInitializedAsync()
     {
-        
+
     }
 }

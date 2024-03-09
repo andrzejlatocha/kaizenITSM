@@ -1,7 +1,17 @@
 ﻿@page "/faq"
 
-<h3>Inde FAQ</h3>
+@rendermode RenderMode.InteractiveServer
+
+@inject HttpClient _httpClient;
+
+<h3>Index FAQ</h3>
 
 @code {
+    [Parameter]
+    public int ID { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
 }

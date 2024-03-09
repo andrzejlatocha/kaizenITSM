@@ -1,5 +1,17 @@
-﻿<h3>Insert</h3>
+﻿@page "/cmdb/insert"
+
+@rendermode RenderMode.InteractiveServer
+
+@inject HttpClient _httpClient;
+
+<h3>Insert</h3>
 
 @code {
+    [Parameter]
+    public int ID { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
 }

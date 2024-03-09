@@ -1,10 +1,10 @@
-﻿@page "/cmdb/delete/{ID:int}"
+﻿@page "/hd/insert"
 
 @rendermode RenderMode.InteractiveServer
 
 @inject HttpClient _httpClient;
 
-<h3>Delete</h3>
+<h3>Insert</h3>
 
 @code {
     [Parameter]
@@ -12,6 +12,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+
     }
 }

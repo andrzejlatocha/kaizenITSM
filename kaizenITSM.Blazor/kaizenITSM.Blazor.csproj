@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Pages\faq\Detail.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.5.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.5.0" />
     <PackageReference Include="Radzen.Blazor" Version="4.25.12" />
@@ -14,6 +18,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\kaizenITSM.Domain\kaizenITSM.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\faq\Detail.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\faq\Detail.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\faq\Detail.razor" />
   </ItemGroup>
 
 </Project>
