@@ -9,15 +9,10 @@
 @using kaizenITSM.Domain.ViewModels
 @using kaizenITSM.Domain.ViewModels.cmdb
 
-<table style="width: 100%; border-color: red; border-width: 2px; ">
-    <tr>
-        <th>
+@inject NavigationManager _navigationManager
+@inject DialogService _dialogService
 
-        </th>
-    </tr>
-</table>
-
-<div cla    ss="row ms-2">
+<div class="row ms-2">
     <div class="col-12">
         <div class="row mt-2">
             <div class="col-12">
@@ -53,23 +48,20 @@
                             <div class="col-6">
                                 <div class="float-end ms-2 me-2">
                                     <a onclick="@CardView"><img id="card" src="images\view\card-24.png" /></a>
-                                    <FluentTooltip Anchor="card">
-                                        Widok kart
-                                    </FluentTooltip>
                                 </div>
                                 <div class="float-end ms-2">
                                     <a onclick="@ListView"><img id="list" src="images\view\list-24.png" /></a>
-                                    <FluentTooltip Anchor="list">
-                                        Widok listy
-                                    </FluentTooltip>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-12">
-                                <RadzenButton Variant="Variant.Outlined" Text="Nowy" ButtonStyle="ButtonStyle.Primary" />
-                                <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" />
-                                <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" />
+                                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal" class="w-100">
+                                    <RadzenButton Variant="Variant.Outlined" Text="Nowy" ButtonStyle="ButtonStyle.Primary" />
+                                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" />
+                                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" />
+                                    <RadzenButton Variant="Variant.Outlined" Text="Szczególy" ButtonStyle="ButtonStyle.Primary" Click="OnDetail" />
+                                </RadzenStack>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -82,10 +74,11 @@
                                 {
                                     if (showList)
                                     {
-                                        <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowFiltering="true" 
-                                                        AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectList" Density="Density.Compact" 
-                                                        SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" AllowColumnResize="true" AllowColumnReorder="true" 
-                                                        AllowColumnPicking="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
+                                        <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" 
+                                                        AllowFiltering="true" AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectList" 
+                                                        Density="Density.Compact" SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" 
+                                                        AllowColumnResize="true" AllowColumnReorder="true" AllowColumnPicking="false" 
+                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
                                                         AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
                                             <EmptyTemplate>
                                                 <p class="grid-empty-template">Brak danych.</p>
@@ -125,6 +118,7 @@
 
     IEnumerable<ObjectsHierarchyViewModel> objects;
     IEnumerable<ObjectsHierarchyDetailViewModel> objectList;
+    ObjectsHierarchyViewModel selection;
 
     private bool showList = true;
     private bool showCard = false;
@@ -138,6 +132,8 @@
     protected override async Task OnInitializedAsync()
     {
         objects = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectsHierarchyViewModel>>($"/api/ObjectsHierarchy/Select");
+
+        selection = objects.OrderBy(ob => ob.ObjectID).FirstOrDefault();
     }
 
     void LoadNode(TreeExpandEventArgs args)
@@ -201,5 +197,26 @@
     {
         showList = false;
         showCard = true;
+    }
+
+    void OnDetail()
+    {
+        if (selectedItem?.Any() == true)
+        {
+            int? objectID = selectedItem[0].ObjectID;
+
+            if (objectID != null)
+            {
+                _navigationManager.NavigateTo($"/cmdb/detail/{objectID}");
+            }
+            else
+            {
+                _dialogService.Alert("Niepoprawny identyfikator wiersza.", "Błąd", new AlertOptions() { OkButtonText = "Zamknij" });
+            }
+        }
+        else
+        {
+            _dialogService.Alert("Prosze wybrać rekord w tabeli.", "Uwaga", new AlertOptions() { OkButtonText = "Zamknij" });
+        }
     }
 }

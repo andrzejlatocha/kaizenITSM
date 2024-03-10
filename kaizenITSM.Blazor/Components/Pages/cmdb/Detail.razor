@@ -2,16 +2,84 @@
 
 @rendermode RenderMode.InteractiveServer
 
+@using kaizenITSM.Domain.ViewModels.cmdb
+
 @inject HttpClient _httpClient;
 
-<h3>Detail</h3>
+@inject NavigationManager _navigationManager
+
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="row ps-2">
+            <div class="col-12">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="1.5rem" JustifyContent="JustifyContent.Normal" 
+                             AlignItems="AlignItems.Normal" class="w-100">
+                    <RadzenButton Variant="Variant.Outlined" Text="" Icon="@("<i class=\"fa fa-backward\"></i>")"
+                                  ButtonStyle="ButtonStyle.Primary" Click="@OnReturn" />
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" 
+                                 AlignItems="AlignItems.Normal" class="w-100">
+                        <RadzenButton Variant="Variant.Outlined" Text="Wszystkie" ButtonStyle="ButtonStyle.Primary" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Własne" ButtonStyle="ButtonStyle.Primary" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Postawowe" ButtonStyle="ButtonStyle.Primary" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Techniczne" ButtonStyle="ButtonStyle.Primary" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Księgowe" ButtonStyle="ButtonStyle.Primary" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Dziedziczone" ButtonStyle="ButtonStyle.Primary" />
+                    </RadzenStack>
+                </RadzenStack>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                @if(data == null)
+                {
+                    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Style="width: 100%; height: 2px;" />
+                }
+                else
+                {
+                    <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowFiltering="true"
+                                    AllowSorting="true" TItem="ObjectPropertiesViewModel" Data="@data" Density="Density.Compact"
+                                    SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" AllowColumnResize="true" AllowColumnReorder="true"
+                                    AllowColumnPicking="false" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
+                                    AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
+                        <EmptyTemplate>
+                            <p class="grid-empty-template">Brak danych.</p>
+                        </EmptyTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="ID" Visible="false" />
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Source" Title=" " Frozen="true" Width="40px">
+                                <Template Context="data">
+                                    <RadzenImage Path="@String.Format(@"images\object_source\{0}.png", data.Source)" />
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Label" Title="Etykieta" Width="300px" />
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Value" Title="Wartość" />
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Object" Title="Obiekt" Width="250px" />
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Inherit" Title="Dziedziczy" Width="150px" />
+                            <RadzenDataGridColumn TItem="ObjectPropertiesViewModel" Property="Category" Title="Kategoria" Width="150px" />
+                        </Columns>
+                    </RadzenDataGrid>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
     public int ID { get; set; }
 
+    RadzenDataGrid<ObjectPropertiesViewModel> grid;
+    IList<ObjectPropertiesViewModel>? selectedItem;
+
+    IEnumerable<ObjectPropertiesViewModel> data;
+
     protected override async Task OnInitializedAsync()
     {
+        data = await _httpClient.GetFromJsonAsync<IEnumerable<ObjectPropertiesViewModel>>($"/api/ObjectProperties/SelectByObject/{ID}");
+    }
 
+    void OnReturn()
+    {
+        _navigationManager.NavigateTo("/cmdb");
     }
 }
