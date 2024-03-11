@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.5.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.5.0" />
-    <PackageReference Include="Radzen.Blazor" Version="4.25.12" />
+    <PackageReference Include="Radzen.Blazor" Version="4.26.0" />
   </ItemGroup>
 
   <ItemGroup>
