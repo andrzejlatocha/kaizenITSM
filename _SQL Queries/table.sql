@@ -1,3 +1,33 @@
+CREATE TABLE [dbo].[Files](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[plkExtension] [char](10) NULL,
+	[Name] [varchar](250) NULL,
+	[Number] [varchar](50) NULL,
+	[SystemNumber] [varchar](50) NULL,
+	[FileName] [varchar](250) NULL,
+	[Link] [varchar](4000) NULL,
+	[Version] [tinyint] NULL,
+	[Description] [varchar](4000) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Files] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Files] ADD  CONSTRAINT [DF_Files_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [dbo].[Files] ADD  CONSTRAINT [DF_Files_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
 CREATE TABLE [cmdb].[ObjectStates](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](50) NULL,
@@ -336,5 +366,245 @@ ALTER TABLE [cmdb].[ObjectsHierarchy] ADD  CONSTRAINT [DF_ObjectsHierarchy_Delet
 GO
 
 ALTER TABLE [cmdb].[ObjectsHierarchy] ADD  CONSTRAINT [DF_ObjectsHierarchy_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[Tickets](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Number] [varchar](50) NULL,
+	[UserID] [int] NULL,
+	[TypeOfTicketID] [int] NULL,
+	[PriorityOfTicketID] [int] NULL,
+	[Date] [datetime] NULL,
+	[Topic] [varchar](100) NULL,
+	[Disclaimer] [varchar](max) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TicketStatusValues](
+	[Status] [char](1) NOT NULL,
+	[Disclaimer] [varchar](50) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TicketStatusValues] PRIMARY KEY CLUSTERED 
+(
+	[Status] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketStatusValues] ADD  CONSTRAINT [DF_TicketStatusValues_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketStatusValues] ADD  CONSTRAINT [DF_TicketStatusValues_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TicketAssignmentUsers](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[TicketID] [int] NULL,
+	[UserID] [int] NULL,
+	[Description] [varchar](max) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TicketAssignmentUsers] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketAssignmentUsers] ADD  CONSTRAINT [DF_TicketAssignmentUsers_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[TicketAssignmentUsers] ADD  CONSTRAINT [DF_TicketAssignmentUsers_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketAssignmentUsers] ADD  CONSTRAINT [DF_TicketAssignmentUsers_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[PrioritiesOfTicket](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [varchar](50) NULL,
+	[Icon] [varchar](50) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_PrioritiesOfTicket] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[PrioritiesOfTicket] ADD  CONSTRAINT [DF_PrioritiesOfTicket_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[PrioritiesOfTicket] ADD  CONSTRAINT [DF_PrioritiesOfTicket_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[PrioritiesOfTicket] ADD  CONSTRAINT [DF_PrioritiesOfTicket_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TicketFiles](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[TicketID] [int] NULL,
+	[FileID] [int] NULL,
+	[Status] [char](1) NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TicketFiles] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketFiles] ADD  CONSTRAINT [DF_TicketFiles_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[TicketFiles] ADD  CONSTRAINT [DF_TicketFiles_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TypesOfTicket](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [varchar](50) NULL,
+	[Icon] [varchar](50) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TypesOfTicket] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TypesOfTicket] ADD  CONSTRAINT [DF_TypesOfTicket_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[TypesOfTicket] ADD  CONSTRAINT [DF_TypesOfTicket_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TypesOfTicket] ADD  CONSTRAINT [DF_TypesOfTicket_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[Actions](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ActionID] [int] NULL,
+	[TicketID] [int] NULL,
+	[UserID] [int] NULL,
+	[ActionType] [int] NULL,
+	[Information] [varchar](max) NULL,
+	[Date] [datetime] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Actions] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[Actions] ADD  CONSTRAINT [DF_Actions_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[Actions] ADD  CONSTRAINT [DF_Actions_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[Actions] ADD  CONSTRAINT [DF_Actions_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[ActionFiles](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ActionID] [int] NULL,
+	[FileID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_ActionFiles] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[ActionFiles] ADD  CONSTRAINT [DF_ActionFiles_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[ActionFiles] ADD  CONSTRAINT [DF_ActionFiles_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[ActionFiles] ADD  CONSTRAINT [DF_ActionFiles_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[ActionUsers](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ActionID] [int] NULL,
+	[UserID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_ActionUsers] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[ActionUsers] ADD  CONSTRAINT [DF_ActionUsers_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[ActionUsers] ADD  CONSTRAINT [DF_ActionUsers_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[ActionUsers] ADD  CONSTRAINT [DF_ActionUsers_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 

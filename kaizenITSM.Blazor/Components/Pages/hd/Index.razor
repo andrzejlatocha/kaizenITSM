@@ -1,7 +1,59 @@
 ﻿@page "/hd"
 
-<h3>Index HD</h3>
+<div class="row ms-2">
+    <div class="col-12">
+        <div class="row mt-2">
+            <div class="col-6">
+
+            </div>
+            <div class="col-6">
+                <div class="float-end ms-2 me-2">
+                    <a onclick="@CardView"><img id="card" src="images\view\card-24.png" /></a>
+                </div>
+                <div class="float-end ms-2 me-2">
+                    <a onclick="@ListView"><img id="list" src="images\view\list-24.png" /></a>
+                </div>
+                <div class="float-end ms-2">
+                    <a onclick="@KanbanView"><img id="list" src="images\view\kanban-24.png" /></a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal" class="w-100">
+                    <RadzenButton Variant="Variant.Outlined" Text="Nowy incydent" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" />
+                </RadzenStack>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private bool showList = true;
+    private bool showCard = false;
+    private bool showKanban = false;
 
+    void ListView()
+    {
+
+    }
+
+    void CardView()
+    {
+
+    }
+
+    void KanbanView()
+    {
+
+    }
 }
