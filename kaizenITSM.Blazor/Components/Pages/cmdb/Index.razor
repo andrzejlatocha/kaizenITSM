@@ -77,7 +77,7 @@
                                         <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" 
                                                         AllowFiltering="true" AllowSorting="true" TItem="ObjectsHierarchyDetailViewModel" Data="@objectList" 
                                                         Density="Density.Compact" SelectionMode="Radzen.DataGridSelectionMode.Single" PageSize="24" 
-                                                        AllowColumnResize="true" AllowColumnReorder="true" AllowColumnPicking="false" 
+                                                        AllowColumnResize="true" AllowColumnReorder="true" AllowColumnPicking="false" RowDoubleClick="OnDetail"
                                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
                                                         AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
                                             <EmptyTemplate>
@@ -184,7 +184,7 @@
                 <img src="@icon" />
                 <span>@name</span>
             </div>
-        </div>
+         </div>
      };
 
     void ListView()
