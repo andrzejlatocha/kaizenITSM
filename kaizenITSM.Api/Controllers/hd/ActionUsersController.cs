@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using kaizenITSM.Api.Data;
+using kaizenITSM.Domain.Entities.hd;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using kaizenITSM.Api.Data;
-using kaizenITSM.Domain.Entities.hd;
+using System;
+using System.Linq;
 
 namespace kaizenITSM.Api.Controllers.hd
 {
@@ -23,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/ActionUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ActionUsers>>> GetActionUsers()
+        public async Task<ActionResult<IEnumerable<ActionUsers>>> Select()
         {
             return await _context.ActionUsers.ToListAsync();
         }
 
         // GET: api/ActionUsers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ActionUsers>> GetActionUsers(int id)
+        public async Task<ActionResult<ActionUsers>> Get(int id)
         {
             var actionUsers = await _context.ActionUsers.FindAsync(id);
 
@@ -45,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/ActionUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutActionUsers(int id, ActionUsers actionUsers)
+        public async Task<IActionResult> Update(int id, ActionUsers actionUsers)
         {
             if (id != actionUsers.ID)
             {
@@ -76,7 +73,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/ActionUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ActionUsers>> PostActionUsers(ActionUsers actionUsers)
+        public async Task<ActionResult<ActionUsers>> Insert(ActionUsers actionUsers)
         {
             _context.ActionUsers.Add(actionUsers);
             await _context.SaveChangesAsync();
@@ -86,7 +83,7 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // DELETE: api/ActionUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActionUsers(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var actionUsers = await _context.ActionUsers.FindAsync(id);
             if (actionUsers == null)

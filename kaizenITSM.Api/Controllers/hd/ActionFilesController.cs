@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using kaizenITSM.Api.Data;
+using kaizenITSM.Domain.Entities.hd;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using kaizenITSM.Api.Data;
-using kaizenITSM.Domain.Entities.hd;
+using System;
+using System.Linq;
 
 namespace kaizenITSM.Api.Controllers.hd
 {
@@ -23,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/ActionFiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ActionFiles>>> GetActionFiles()
+        public async Task<ActionResult<IEnumerable<ActionFiles>>> Select()
         {
             return await _context.ActionFiles.ToListAsync();
         }
 
         // GET: api/ActionFiles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ActionFiles>> GetActionFiles(int id)
+        public async Task<ActionResult<ActionFiles>> Get(int id)
         {
             var actionFiles = await _context.ActionFiles.FindAsync(id);
 
@@ -45,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/ActionFiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutActionFiles(int id, ActionFiles actionFiles)
+        public async Task<IActionResult> Update(int id, ActionFiles actionFiles)
         {
             if (id != actionFiles.ID)
             {
@@ -76,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/ActionFiles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ActionFiles>> PostActionFiles(ActionFiles actionFiles)
+        public async Task<ActionResult<ActionFiles>> Insert(ActionFiles actionFiles)
         {
             _context.ActionFiles.Add(actionFiles);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetActionFiles", new { id = actionFiles.ID }, actionFiles);
+            return CreatedAtAction("Get", new { id = actionFiles.ID }, actionFiles);
         }
 
         // DELETE: api/ActionFiles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActionFiles(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var actionFiles = await _context.ActionFiles.FindAsync(id);
             if (actionFiles == null)

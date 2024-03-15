@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using kaizenITSM.Api.Data;
+using kaizenITSM.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using kaizenITSM.Api.Data;
-using kaizenITSM.Domain.Entities;
+using System;
+using System.Linq;
 
 namespace kaizenITSM.Api.Controllers
 {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using kaizenITSM.Api.Data;
+using kaizenITSM.Domain.Entities.hd;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using kaizenITSM.Api.Data;
-using kaizenITSM.Domain.Entities.hd;
+using System;
+using System.Linq;
 
 namespace kaizenITSM.Api.Controllers.hd
 {
@@ -23,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/Actions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Actions>>> GetActions()
+        public async Task<ActionResult<IEnumerable<Actions>>> Select()
         {
             return await _context.Actions.ToListAsync();
         }
 
         // GET: api/Actions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Actions>> GetActions(int id)
+        public async Task<ActionResult<Actions>> Get(int id)
         {
             var actions = await _context.Actions.FindAsync(id);
 
@@ -45,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/Actions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutActions(int id, Actions actions)
+        public async Task<IActionResult> Update(int id, Actions actions)
         {
             if (id != actions.ID)
             {
@@ -76,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/Actions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Actions>> PostActions(Actions actions)
+        public async Task<ActionResult<Actions>> Insert(Actions actions)
         {
             _context.Actions.Add(actions);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetActions", new { id = actions.ID }, actions);
+            return CreatedAtAction("Get", new { id = actions.ID }, actions);
         }
 
         // DELETE: api/Actions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActions(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var actions = await _context.Actions.FindAsync(id);
             if (actions == null)
