@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketStatusValues
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketStatusValues>>> GetTicketStatusValues()
+        public async Task<ActionResult<IEnumerable<TicketStatusValues>>> Select()
         {
             return await _context.TicketStatusValues.ToListAsync();
         }
 
         // GET: api/TicketStatusValues/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketStatusValues>> GetTicketStatusValues(string id)
+        public async Task<ActionResult<TicketStatusValues>> Get(string id)
         {
             var ticketStatusValues = await _context.TicketStatusValues.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/TicketStatusValues/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicketStatusValues(string id, TicketStatusValues ticketStatusValues)
+        public async Task<IActionResult> Update(string id, TicketStatusValues ticketStatusValues)
         {
             if (id != ticketStatusValues.Status)
             {
@@ -73,7 +73,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/TicketStatusValues
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TicketStatusValues>> PostTicketStatusValues(TicketStatusValues ticketStatusValues)
+        public async Task<ActionResult<TicketStatusValues>> Insert(TicketStatusValues ticketStatusValues)
         {
             _context.TicketStatusValues.Add(ticketStatusValues);
             try
@@ -92,12 +92,12 @@ namespace kaizenITSM.Api.Controllers.hd
                 }
             }
 
-            return CreatedAtAction("GetTicketStatusValues", new { id = ticketStatusValues.Status }, ticketStatusValues);
+            return CreatedAtAction("Get", new { id = ticketStatusValues.Status }, ticketStatusValues);
         }
 
         // DELETE: api/TicketStatusValues/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketStatusValues(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var ticketStatusValues = await _context.TicketStatusValues.FindAsync(id);
             if (ticketStatusValues == null)

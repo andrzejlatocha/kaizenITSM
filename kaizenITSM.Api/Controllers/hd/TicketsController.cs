@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tickets>>> GetTickets()
+        public async Task<ActionResult<IEnumerable<Tickets>>> Select()
         {
             return await _context.Tickets.ToListAsync();
         }
 
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tickets>> GetTickets(int id)
+        public async Task<ActionResult<Tickets>> Get(int id)
         {
             var tickets = await _context.Tickets.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTickets(int id, Tickets tickets)
+        public async Task<IActionResult> Update(int id, Tickets tickets)
         {
             if (id != tickets.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/Tickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tickets>> PostTickets(Tickets tickets)
+        public async Task<ActionResult<Tickets>> Insert(Tickets tickets)
         {
             _context.Tickets.Add(tickets);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTickets", new { id = tickets.ID }, tickets);
+            return CreatedAtAction("Get", new { id = tickets.ID }, tickets);
         }
 
         // DELETE: api/Tickets/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTickets(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var tickets = await _context.Tickets.FindAsync(id);
             if (tickets == null)

@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TypesOfTickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> GetTypesOfTicket()
+        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> Select()
         {
             return await _context.TypesOfTicket.ToListAsync();
         }
 
         // GET: api/TypesOfTickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TypesOfTicket>> GetTypesOfTicket(int id)
+        public async Task<ActionResult<TypesOfTicket>> Get(int id)
         {
             var typesOfTicket = await _context.TypesOfTicket.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/TypesOfTickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTypesOfTicket(int id, TypesOfTicket typesOfTicket)
+        public async Task<IActionResult> Update(int id, TypesOfTicket typesOfTicket)
         {
             if (id != typesOfTicket.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/TypesOfTickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TypesOfTicket>> PostTypesOfTicket(TypesOfTicket typesOfTicket)
+        public async Task<ActionResult<TypesOfTicket>> Insert(TypesOfTicket typesOfTicket)
         {
             _context.TypesOfTicket.Add(typesOfTicket);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTypesOfTicket", new { id = typesOfTicket.ID }, typesOfTicket);
+            return CreatedAtAction("Get", new { id = typesOfTicket.ID }, typesOfTicket);
         }
 
         // DELETE: api/TypesOfTickets/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTypesOfTicket(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var typesOfTicket = await _context.TypesOfTicket.FindAsync(id);
             if (typesOfTicket == null)

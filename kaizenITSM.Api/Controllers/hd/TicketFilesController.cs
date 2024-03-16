@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketFiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketFiles>>> GetTicketFiles()
+        public async Task<ActionResult<IEnumerable<TicketFiles>>> Select()
         {
             return await _context.TicketFiles.ToListAsync();
         }
 
         // GET: api/TicketFiles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketFiles>> GetTicketFiles(int id)
+        public async Task<ActionResult<TicketFiles>> Get(int id)
         {
             var ticketFiles = await _context.TicketFiles.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/TicketFiles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicketFiles(int id, TicketFiles ticketFiles)
+        public async Task<IActionResult> Update(int id, TicketFiles ticketFiles)
         {
             if (id != ticketFiles.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/TicketFiles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TicketFiles>> PostTicketFiles(TicketFiles ticketFiles)
+        public async Task<ActionResult<TicketFiles>> Insert(TicketFiles ticketFiles)
         {
             _context.TicketFiles.Add(ticketFiles);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTicketFiles", new { id = ticketFiles.ID }, ticketFiles);
+            return CreatedAtAction("Get", new { id = ticketFiles.ID }, ticketFiles);
         }
 
         // DELETE: api/TicketFiles/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketFiles(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var ticketFiles = await _context.TicketFiles.FindAsync(id);
             if (ticketFiles == null)

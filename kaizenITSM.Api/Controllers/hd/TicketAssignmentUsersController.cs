@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketAssignmentUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketAssignmentUsers>>> GetTicketAssignmentUsers()
+        public async Task<ActionResult<IEnumerable<TicketAssignmentUsers>>> Select()
         {
             return await _context.TicketAssignmentUsers.ToListAsync();
         }
 
         // GET: api/TicketAssignmentUsers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketAssignmentUsers>> GetTicketAssignmentUsers(int id)
+        public async Task<ActionResult<TicketAssignmentUsers>> Get(int id)
         {
             var ticketAssignmentUsers = await _context.TicketAssignmentUsers.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/TicketAssignmentUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicketAssignmentUsers(int id, TicketAssignmentUsers ticketAssignmentUsers)
+        public async Task<IActionResult> Update(int id, TicketAssignmentUsers ticketAssignmentUsers)
         {
             if (id != ticketAssignmentUsers.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/TicketAssignmentUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TicketAssignmentUsers>> PostTicketAssignmentUsers(TicketAssignmentUsers ticketAssignmentUsers)
+        public async Task<ActionResult<TicketAssignmentUsers>> Insert(TicketAssignmentUsers ticketAssignmentUsers)
         {
             _context.TicketAssignmentUsers.Add(ticketAssignmentUsers);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTicketAssignmentUsers", new { id = ticketAssignmentUsers.ID }, ticketAssignmentUsers);
+            return CreatedAtAction("Get", new { id = ticketAssignmentUsers.ID }, ticketAssignmentUsers);
         }
 
         // DELETE: api/TicketAssignmentUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketAssignmentUsers(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var ticketAssignmentUsers = await _context.TicketAssignmentUsers.FindAsync(id);
             if (ticketAssignmentUsers == null)

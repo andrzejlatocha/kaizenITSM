@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/PrioritiesOfTickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PrioritiesOfTicket>>> GetPrioritiesOfTicket()
+        public async Task<ActionResult<IEnumerable<PrioritiesOfTicket>>> Select()
         {
             return await _context.PrioritiesOfTicket.ToListAsync();
         }
 
         // GET: api/PrioritiesOfTickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PrioritiesOfTicket>> GetPrioritiesOfTicket(int id)
+        public async Task<ActionResult<PrioritiesOfTicket>> Get(int id)
         {
             var prioritiesOfTicket = await _context.PrioritiesOfTicket.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/PrioritiesOfTickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPrioritiesOfTicket(int id, PrioritiesOfTicket prioritiesOfTicket)
+        public async Task<IActionResult> Update(int id, PrioritiesOfTicket prioritiesOfTicket)
         {
             if (id != prioritiesOfTicket.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/PrioritiesOfTickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PrioritiesOfTicket>> PostPrioritiesOfTicket(PrioritiesOfTicket prioritiesOfTicket)
+        public async Task<ActionResult<PrioritiesOfTicket>> Insert(PrioritiesOfTicket prioritiesOfTicket)
         {
             _context.PrioritiesOfTicket.Add(prioritiesOfTicket);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPrioritiesOfTicket", new { id = prioritiesOfTicket.ID }, prioritiesOfTicket);
+            return CreatedAtAction("Get", new { id = prioritiesOfTicket.ID }, prioritiesOfTicket);
         }
 
         // DELETE: api/PrioritiesOfTickets/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePrioritiesOfTicket(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var prioritiesOfTicket = await _context.PrioritiesOfTicket.FindAsync(id);
             if (prioritiesOfTicket == null)
