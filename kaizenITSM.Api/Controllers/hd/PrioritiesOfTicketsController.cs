@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace kaizenITSM.Api.Controllers.hd
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PrioritiesOfTicketsController : ControllerBase
     {

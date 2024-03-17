@@ -1,32 +1,49 @@
 ﻿@page "/hd"
 
+@rendermode RenderMode.InteractiveServer
+
+@using kaizenITSM.Domain.ViewModels.hd
+@using kaizenITSM.Domain.Enumerators.hd
+
+@inject HttpClient _httpClient;
+@inject ILogger<TicketViewModel> _logger
+@inject NavigationManager _navigationManager
+@inject DialogService _dialogService
+
 <div class="row ms-2">
     <div class="col-12">
         <div class="row mt-2">
             <div class="col-6">
-
+                <RadzenDropDown @bind-Value=@viewType Data=@ticketViewType TextProperty="Name" ValueProperty="ID" Style="width: 200px;">
+                </RadzenDropDown>
             </div>
             <div class="col-6">
-                <div class="float-end ms-2 me-2">
+                <div class="float-end ms-2">
                     <a onclick="@CardView"><img id="card" src="images\view\card-24.png" /></a>
                 </div>
-                <div class="float-end ms-2 me-2">
+                <div class="float-end ms-2">
                     <a onclick="@ListView"><img id="list" src="images\view\list-24.png" /></a>
                 </div>
-                <div class="float-end ms-2">
+                <div class="float-end ms-2 me-2">
                     <a onclick="@KanbanView"><img id="list" src="images\view\kanban-24.png" /></a>
+                </div>
+                <div class="float-end me-4">
+                    <RadzenDropDown @bind-Value=@timeScope Data=@ticketTimeScope TextProperty="Name" ValueProperty="Scope" Style="width: 150px;">
+                    </RadzenDropDown>
                 </div>
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-12">
-                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal" class="w-100">
-                    <RadzenButton Variant="Variant.Outlined" Text="Nowy incydent" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" />
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal" 
+                             class="w-100">
+                    <RadzenButton Variant="Variant.Outlined" Text="Nowy incydent" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" 
+                                  Click="OnInsert" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
                 </RadzenStack>
             </div>
         </div>
@@ -42,18 +59,53 @@
     private bool showCard = false;
     private bool showKanban = false;
 
+    private int viewType = 1;
+    private int timeScope = 30;
+
+    private List<TicketViewTypeEnumerator> ticketViewType = new List<TicketViewTypeEnumerator>()
+    {
+        new TicketViewTypeEnumerator(1, "1", "Zgłosznia otwarte"),
+        new TicketViewTypeEnumerator(2, "2", "Zgłosznia nieprzydzielone"),
+        new TicketViewTypeEnumerator(3, "3", "Anulowane zgłoszenia"),
+        new TicketViewTypeEnumerator(4, "4", "Zgłosznia zakończone"),
+        new TicketViewTypeEnumerator(5, "5", "Moje zgłosznia otwarte"),
+        new TicketViewTypeEnumerator(6, "6", "Moje zgłosznia zamknięte")
+    };
+
+    private List<TicketTimeScopeEnumerator> ticketTimeScope = new List<TicketTimeScopeEnumerator>()
+    {
+        new TicketTimeScopeEnumerator(30, "Ostatnie 30 dni"),
+        new TicketTimeScopeEnumerator(1, "Ostatnie 24 godziny"),
+        new TicketTimeScopeEnumerator((int)DateTime.Today.DayOfWeek, "W tym tygodniu"),
+        new TicketTimeScopeEnumerator(90, "Ostatnie 90 dni"),
+        new TicketTimeScopeEnumerator(DateTime.Today.Day, "Ten miesiąc"),
+        new TicketTimeScopeEnumerator(DateTime.Today.DayOfYear, "Ten rok"),
+        new TicketTimeScopeEnumerator(999999, "Wszystkie")
+    };
+
+    void OnInsert()
+    {
+        _navigationManager.NavigateTo("/hd/insert");
+    }
+
     void ListView()
     {
-
+        showList = true;
+        showCard = false;
+        showKanban = false;
     }
 
     void CardView()
     {
-
+        showList = false;
+        showCard = true;
+        showKanban = false;
     }
 
     void KanbanView()
     {
-
+        showList = false;
+        showCard = false;
+        showKanban = true;
     }
 }

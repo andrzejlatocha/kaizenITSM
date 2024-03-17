@@ -32,6 +32,8 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<TicketAssignmentUsers> TicketAssignmentUsers { get; set; }
         public virtual DbSet<TicketFiles> TicketFiles { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }
+        public virtual DbSet<TicketsCategory> TicketsCategory { get; set; }
+        public virtual DbSet<TicketsSource> TicketsSource { get; set; }
         public virtual DbSet<TicketStatusValues> TicketStatusValues { get; set; }
         public virtual DbSet<TypesOfTicket> TypesOfTicket { get; set; }
         

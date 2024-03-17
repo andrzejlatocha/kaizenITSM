@@ -368,38 +368,6 @@ GO
 ALTER TABLE [cmdb].[ObjectsHierarchy] ADD  CONSTRAINT [DF_ObjectsHierarchy_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-CREATE TABLE [hd].[Tickets](
-	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[Number] [varchar](50) NULL,
-	[UserID] [int] NULL,
-	[TypeOfTicketID] [int] NULL,
-	[PriorityOfTicketID] [int] NULL,
-	[Date] [datetime] NULL,
-	[Topic] [varchar](100) NULL,
-	[Disclaimer] [varchar](max) NULL,
-	[Status] [char](1) NULL,
-	[CreationDate] [datetime] NULL,
-	[CreationUserID] [int] NULL,
-	[ModifyingDate] [datetime] NULL,
-	[ModifyingUserID] [int] NULL,
-	[Deleted] [bit] NULL,
-	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
- CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-
-ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Status]  DEFAULT ('A') FOR [Status]
-GO
-
-ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Deleted]  DEFAULT ((0)) FOR [Deleted]
-GO
-
-ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_rowguid]  DEFAULT (newid()) FOR [rowguid]
-GO
-
 CREATE TABLE [hd].[TicketStatusValues](
 	[Status] [char](1) NOT NULL,
 	[Disclaimer] [varchar](50) NULL,
@@ -606,5 +574,113 @@ ALTER TABLE [hd].[ActionUsers] ADD  CONSTRAINT [DF_ActionUsers_Deleted]  DEFAULT
 GO
 
 ALTER TABLE [hd].[ActionUsers] ADD  CONSTRAINT [DF_ActionUsers_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TicketsCategory](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Name] [varchar](150) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TicketsCategory] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketsCategory] ADD  CONSTRAINT [DF_TicketsCategory_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketsCategory] ADD  CONSTRAINT [DF_TicketsCategory_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[TicketsSource](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Name] [varchar](150) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_TicketsSource] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketsSource] ADD  CONSTRAINT [DF_TicketsSource_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketsSource] ADD  CONSTRAINT [DF_TicketsSource_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [hd].[Tickets](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Number] [varchar](50) NULL,
+	[UserID] [int] NULL,
+	[TypeOfTicketID] [int] NULL,
+	[PriorityOfTicketID] [int] NULL,
+	[TicketCategoryID] [int] NULL,
+	[TicketSourceID] [int] NULL,
+	[Date] [datetime] NULL,
+	[Topic] [varchar](100) NULL,
+	[Disclaimer] [varchar](max) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[Tickets] ADD  CONSTRAINT [DF_Tickets_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[Tickets]  WITH CHECK ADD  CONSTRAINT [FK_Tickets_PrioritiesOfTicket] FOREIGN KEY([PriorityOfTicketID])
+REFERENCES [hd].[PrioritiesOfTicket] ([ID])
+GO
+
+ALTER TABLE [hd].[Tickets] CHECK CONSTRAINT [FK_Tickets_PrioritiesOfTicket]
+GO
+
+ALTER TABLE [hd].[Tickets]  WITH CHECK ADD  CONSTRAINT [FK_Tickets_TicketsCategory] FOREIGN KEY([TicketCategoryID])
+REFERENCES [hd].[TicketsCategory] ([ID])
+GO
+
+ALTER TABLE [hd].[Tickets] CHECK CONSTRAINT [FK_Tickets_TicketsCategory]
+GO
+
+ALTER TABLE [hd].[Tickets]  WITH CHECK ADD  CONSTRAINT [FK_Tickets_TicketsSource] FOREIGN KEY([TicketSourceID])
+REFERENCES [hd].[TicketsSource] ([ID])
+GO
+
+ALTER TABLE [hd].[Tickets] CHECK CONSTRAINT [FK_Tickets_TicketsSource]
+GO
+
+ALTER TABLE [hd].[Tickets]  WITH CHECK ADD  CONSTRAINT [FK_Tickets_TypesOfTicket] FOREIGN KEY([TypeOfTicketID])
+REFERENCES [hd].[TypesOfTicket] ([ID])
+GO
+
+ALTER TABLE [hd].[Tickets] CHECK CONSTRAINT [FK_Tickets_TypesOfTicket]
 GO
 

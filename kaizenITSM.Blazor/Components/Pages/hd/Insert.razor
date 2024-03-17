@@ -2,16 +2,179 @@
 
 @rendermode RenderMode.InteractiveServer
 
-@inject HttpClient _httpClient;
+@using kaizenITSM.Domain.Entities.hd
 
-<h3>Insert</h3>
+@inject HttpClient _httpClient;
+@inject ILogger<Tickets> _logger
+@inject NavigationManager _navigationManager
+@inject DialogService _dialogService
+
+@if (data == null)
+{
+    <Load />
+}
+else
+{
+    <div class="row mt-2">
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h3>Nowe zgłoszenie</h3>
+                    </div>
+                </div>
+                <div class="card-text p-2">
+                    <div class="row mt-0">
+                        <div class="col-12">
+                            <RadzenAlert Variant="Variant.Filled" AlertStyle="AlertStyle.Primary" Shade="Shade.Dark"
+                                            AllowClose="false" Visible="@errorVisible" Size="AlertSize.Small">
+                                <RadzenLabel Text="@errorMessage">
+                                </RadzenLabel>
+                            </RadzenAlert>
+                        </div>
+                    </div>
+                    <EditForm Model=@data OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+                        <DataAnnotationsValidator />
+                        <div class="row mt-1">
+                            <div class="col-6">
+                                <RadzenFormField Text="Typ zgłoszenia" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.TypeOfTicketID" AllowClear="true" Name="typeOfTicketID" Class="w-100"
+                                                    Data="@typesOfTicket" TextProperty="Description" ValueProperty="ID"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains">
+                                    </RadzenDropDown>
+                                </RadzenFormField>
+                            </div>
+                            <div class="col-6">
+                                <RadzenFormField Text="Status" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.Status" AllowClear="true" Name="status" Class="w-100"
+                                                    Data="@ticketStatusValues" TextProperty="Disclaimer" ValueProperty="ID"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains">
+                                    </RadzenDropDown>
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-6">
+                                <RadzenFormField Text="Źródło" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.TicketSourceID" AllowClear="true" Name="ticketSource" Class="w-100"
+                                                    Data="@ticketsSource" TextProperty="Name" ValueProperty="ID"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains">
+                                    </RadzenDropDown>
+                                </RadzenFormField>
+                            </div>
+                            <div class="col-6">
+                                <RadzenFormField Text="Pilność" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.PriorityOfTicketID" AllowClear="true" Name="priorityOfTicket" Class="w-100"
+                                                    Data="@prioritiesOfTicket" TextProperty="Description" ValueProperty="ID"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains">
+                                    </RadzenDropDown>
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-6">
+                                <RadzenFormField Text="Grupa" Class="w-100">
+                                </RadzenFormField>
+                            </div>
+                            <div class="col-6">
+                                <RadzenFormField Text="Kategoria" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.TicketCategoryID" AllowClear="true" Name="ticketCategory" Class="w-100"
+                                                    Data="@ticketsCategory" TextProperty="Name" ValueProperty="ID"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains">
+                                    </RadzenDropDown>
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <RadzenFormField Text="Technik" Class="w-100">
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <RadzenFormField Text="Temat" Class="w-100">
+                                    <RadzenTextBox @bind-Value="data.Topic" AllowClear="true" Name="topic" Class="w-100" @oninput=@(args => OnChange())>
+                                    </RadzenTextBox>
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <RadzenFormField Text="Opis" Class="w-100">
+                                    <RadzenHtmlEditor @bind-Value=@ticketDisclaimer style="height: 300px;" UploadUrl="upload/image" />
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <RadzenFormField Text="Załączniki" Class="w-100">
+                                    <RadzenFileInput TValue="string" class="w-100"
+                                                     InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+                                </RadzenFormField>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
-    [Parameter]
-    public int ID { get; set; }
+    private bool errorVisible = false;
+    private string? errorMessage = string.Empty;
+
+    private Tickets data = new Tickets();
+    private IEnumerable<TypesOfTicket> typesOfTicket;
+    private IEnumerable<PrioritiesOfTicket> prioritiesOfTicket;
+    private IEnumerable<TicketStatusValues> ticketStatusValues;
+    private IEnumerable<TicketsCategory> ticketsCategory;
+    private IEnumerable<TicketsSource> ticketsSource;
+
+    private string? ticketDisclaimer;
 
     protected override async Task OnInitializedAsync()
     {
+        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"/api/TypesOfTicket/Select?Status=A");
+    }
 
+    private async void HandleValidSubmit(EditContext context)
+    {
+        _logger.LogInformation("Ticket Create Submit");
+
+        //var ret = await _pracownikService.Insert(data);
+
+        // if (ret.Code == StatusCodes.Status201Created)
+        // {
+        //     await _dialogService.Alert("Dane zostały zapisane poprawnie.", "Informacja", new AlertOptions() { OkButtonText = "OK" });
+        //     _navigationManager.NavigateTo("/hd");
+        // }
+        // else
+        // {
+        //     errorMessage = ret.Message;
+        //     errorVisible = true;
+        // }
+    }
+
+    private void HandleInvalidSubmit(EditContext context)
+    {
+        errorMessage = "Popraw wszystkie błędy";
+        errorVisible = true;
+    }
+
+    void Close()
+    {
+        _navigationManager.NavigateTo("/hd");
+    }
+
+    void OnChange()
+    {
+        errorVisible = false;
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace kaizenITSM.Api.Controllers.hd
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TypesOfTicketsController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TypesOfTickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> Select()
+        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> Select(string Status)
         {
-            return await _context.TypesOfTicket.ToListAsync();
+            return await _context.TypesOfTicket.Where(w => w.Status == Status || Status == "A").ToListAsync();
         }
 
         // GET: api/TypesOfTickets/5
