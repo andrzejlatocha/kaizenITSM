@@ -27,7 +27,7 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/Actions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Actions>> Get(int id)
+        public async Task<ActionResult<Actions>> Get(int id, CancellationToken cancellationToken)
         {
             var actions = await _context.Actions.FindAsync(id);
 

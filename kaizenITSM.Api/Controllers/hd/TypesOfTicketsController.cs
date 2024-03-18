@@ -20,7 +20,7 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TypesOfTickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> Select(string Status)
+        public async Task<ActionResult<IEnumerable<TypesOfTicket>>> Select(string Status, CancellationToken cancellationToken)
         {
             return await _context.TypesOfTicket.Where(w => w.Status == Status || Status == "A").ToListAsync();
         }

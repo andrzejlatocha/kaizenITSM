@@ -1,7 +1,4 @@
-using BlazorApp1.Components.Account;
 using kaizenITSM.Blazor.Components;
-using kaizenITSM.Blazor.Data;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Radzen;
 
@@ -12,10 +9,10 @@ var environment = builder.Environment;
 
 services.AddRazorComponents().AddInteractiveServerComponents();
 
-builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddScoped<IdentityUserAccessor>();
-builder.Services.AddScoped<IdentityRedirectManager>();
-builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+//builder.Services.AddCascadingAuthenticationState();
+//builder.Services.AddScoped<IdentityUserAccessor>();
+//builder.Services.AddScoped<IdentityRedirectManager>();
+//builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -29,9 +26,9 @@ services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseApiUrl) });
 services.AddRadzenComponents();
 
 //builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    //.AddEntityFrameworkStores<ApplicationDbContext>()
-    //.AddSignInManager()
-    //.AddDefaultTokenProviders();
+//.AddEntityFrameworkStores<ApplicationDbContext>()
+//.AddSignInManager()
+//.AddDefaultTokenProviders();
 
 //builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 

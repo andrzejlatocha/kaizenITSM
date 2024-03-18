@@ -1,6 +1,6 @@
-using BlazorApp1.Components.Account.Pages;
-using BlazorApp1.Components.Account.Pages.Manage;
-using BlazorApp1.Data;
+using kaizenITSM.Blazor.Components.Account.Pages;
+using kaizenITSM.Blazor.Components.Account.Pages.Manage;
+using kaizenITSM.Blazor.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;

@@ -141,7 +141,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"/api/TypesOfTicket/Select?Status=A");
+        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"/api/TypesOfTickets/Select?Status=A");
     }
 
     private async void HandleValidSubmit(EditContext context)

@@ -1,7 +1,7 @@
-using BlazorApp1.Data;
+using kaizenITSM.Blazor.Data;
 using Microsoft.AspNetCore.Identity;
 
-namespace BlazorApp1.Components.Account
+namespace kaizenITSM.Blazor.Components.Account
 {
     internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
     {

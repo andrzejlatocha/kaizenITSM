@@ -29,4 +29,8 @@
     <ProjectReference Include="..\kaizenITSM.Domain\kaizenITSM.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\faq\" />
+  </ItemGroup>
+
 </Project>
