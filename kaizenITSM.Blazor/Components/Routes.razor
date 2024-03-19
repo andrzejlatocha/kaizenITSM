@@ -1,6 +1,31 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
-    </Found>
-</Router>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Błąd</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="row w-100">
+                    <div class="col-12">
+                        <img class="center-block mt-5 pt-5" src="images/404.jpg" />
+                    </div>
+                </div>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code
+{
+    //HttpContext _httpContext;
+
+    protected async override Task OnInitializedAsync()
+    {
+        //_httpContext = _httpContextAccessor.HttpContext;
+    }
+}

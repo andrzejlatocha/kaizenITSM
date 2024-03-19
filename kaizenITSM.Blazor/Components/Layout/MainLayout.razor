@@ -1,27 +1,48 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.FluentUI.AspNetCore.Components
+@using kaizenITSM.Blazor.Components.Pages.account
 
 <div>
-    <FluentLayout>
+    <FluentLayout Style="height: 100%; ">
         <FluentHeader>
             <MainHeader />
         </FluentHeader>
         <FluentStack Orientation="Microsoft.FluentUI.AspNetCore.Components.Orientation.Horizontal" Width="100%">
-            <FluentNavMenu Width="50">
+            <FluentNavMenu Width="50" Style="background-color: gray; border: 1px; border-color: green; height: 100%">
                 <FluentNavLink Icon="@(new Icons.Regular.Size48.Home())" Href="/"></FluentNavLink>
                 <FluentNavLink Icon="@(new Icons.Regular.Size48.Headset())" Href="/hd"></FluentNavLink>
                 <FluentNavLink Icon="@(new Icons.Regular.Size48.DesktopPulse())" Href="/cmdb"></FluentNavLink>
                 <FluentNavLink Icon="@(new Icons.Regular.Size48.Document())" Href="/faq"></FluentNavLink>
+                <AuthorizeView Roles="Administrator">
+                    <FluentNavLink Icon="@(new Icons.Regular.Size48.Settings())" Href="/administrator"></FluentNavLink>
+                </AuthorizeView>
+                <AuthorizeView Roles="Dictionary">
+                    <FluentNavLink Icon="@(new Icons.Regular.Size48.BookOpen())" Href="/dictionary"></FluentNavLink>
+                </AuthorizeView>
             </FluentNavMenu>
             <FluentBodyContent>
                 <div class="row vh-max">
-                    @Body
+                    <AuthorizeView>
+                        <Authorized>
+                            @Body
+                        </Authorized>
+                        <NotAuthorized>
+                            <div class="row vh-100">
+                                <div class="col-12 p-5">
+                                    <Login />
+                                </div>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 </div>
             </FluentBodyContent>
         </FluentStack>
     </FluentLayout>
 </div>
+
 <footer class="mt-auto">
     <Footer />
 </footer>

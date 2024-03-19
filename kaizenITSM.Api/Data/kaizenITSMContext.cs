@@ -1,6 +1,7 @@
 ﻿using kaizenITSM.Domain.Entities;
 using kaizenITSM.Domain.Entities.cmdb;
 using kaizenITSM.Domain.Entities.hd;
+using kaizenITSM.Domain.Models.account;
 using kaizenITSM.Domain.ViewModels.cmdb;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,8 @@ namespace kaizenITSM.Api.Data
 
         public virtual DbSet<Objects> Objects { get; set; }
 
+        // Models
+        public virtual DbSet<UserModel> UserModel { get; set; }
 
         // ViewModels
         public virtual DbSet<ObjectsHierarchyDetailViewModel> ObjectsHierarchyDetailViewModel { get; set; }

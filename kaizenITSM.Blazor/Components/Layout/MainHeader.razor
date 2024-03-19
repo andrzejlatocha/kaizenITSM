@@ -1,4 +1,6 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.FluentUI.AspNetCore.Components
 
 <nav class="navbar navbar-dark navbar-expand-md w-100">
     <div class="container-fluid">
@@ -25,9 +27,18 @@
                     <div class="float-end ms-2">
                         <img id="settings" src="images\header\settings-24.png" />
                     </div>
-                    <div class="float-end ms-5">
-                        <img id="settings" src="images\user.png" width="32px" height="32px" class="rounded-circle" />
-                    </div>
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="float-end ms-5">
+                                <img id="settings" src="images\user.png" width="32px" height="32px" class="rounded-circle" />
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div class="float-end ms-5">
+                                <a href="/account/login">Zaloguj</a>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 </div>
             </div>
         </div>

@@ -1,0 +1,120 @@
+﻿@page "/account/login"
+
+@attribute [AllowAnonymous]
+
+@inject HttpClient _httpClient;
+@inject ILogger<LoginUserModel> _logger
+@inject NavigationManager _navigationManager
+@inject DialogService _dialogService
+@inject SignInManager<IdentityUser> _signInManager
+
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using kaizenITSM.Domain.Models.Account
+@using kaizenITSM.Domain.Models.account
+
+<div class="container px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+	<div class="card card0 border-0">
+		<div class="row d-flex">
+			<div class="col-lg-6">
+				<div class="card1 pb-5">
+					<div class="row px-3 justify-content-center mt-4 ms-5 border-line"> <img src="images/login.png" class="image"> 
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="card2 card border-0 px-4 py-5">
+					<EditForm Model=@data OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" FormName="LoginForm">
+                        <DataAnnotationsValidator />
+						<div class="row">
+							<label class="form-label">
+								Użytkownik
+							</label>
+							<InputText @bind-Value="data.LoginName" class="form-control" />
+							<ValidationMessage For="() => data.LoginName" />
+						</div>
+						<div class="row mt-3">
+							<label class="form-label">
+								Hasło
+							</label>
+							<InputText @bind-Value="data.Password" class="form-control" />
+							<ValidationMessage For="() => data.Password" />
+						</div>
+						<div class="row mt-3 text-center">
+							<span class="text-danger">
+								@errorMessage
+							</span>
+						</div>
+						<div class="row mt-3">
+							<button type="submit" class="btn btn-primary">Zaloguj</button>
+						</div>
+					</EditForm>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[CascadingParameter]
+	private HttpContext _httpContext { get; set; } = default!;
+
+	[SupplyParameterFromForm]
+	public LoginUserModel data { get; set; } = new();
+
+	private string? errorMessage;
+
+	//private readonly SignInManager<IdentityUser> _signInManager;
+	// private readonly RoleManager<IdentityRole> _roleManager;
+	// private readonly UserManager<IdentityUser> _userManager;
+
+	protected override async Task OnInitializedAsync()
+	{
+
+	}
+
+	private void OnInvalidSubmit(EditContext context)
+	{
+		errorMessage = "Popraw wszystkie błędy";
+	}
+
+	private async void OnValidSubmit(EditContext context)
+	{
+		_logger.LogInformation("Login Create Submit");
+
+		var user = await _httpClient.GetFromJsonAsync<UserModel>($"/api/Login/Get?loginName={data.LoginName}&password={data.Password}"); ;
+
+		if (user is null)
+		{
+			errorMessage = "Błędna nazwa użytkownika lub hasło";
+			return;
+		}
+
+		var claims = new List<Claim>();
+
+		claims.Add(new Claim("ID", user.ID.ToString()));
+		claims.Add(new Claim("LoginName", $"{user.LoginName}"));
+		claims.Add(new Claim("FirstName", $"{user.FirstName}"));
+		claims.Add(new Claim("LastName", $"{user.LastName}"));
+		claims.Add(new Claim("Name", $"{user.FirstName} {user.LastName}"));
+		claims.Add(new Claim("Email", $"{user.Email}"));
+		claims.Add(new Claim("Token", $"{user.Token}"));
+
+		string[] roles = user.UserRoles.Split('|');
+
+		foreach (var role in roles)
+		{
+			claims.Add(new Claim(ClaimTypes.Role, role));
+		}
+
+		ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+		var principal = new ClaimsPrincipal(identity);
+
+		await _httpContext.SignInAsync(principal);
+
+		_navigationManager.NavigateTo("/");
+	}
+}

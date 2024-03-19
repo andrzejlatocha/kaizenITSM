@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.5.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.5.0" />
     <PackageReference Include="Radzen.Blazor" Version="4.28.1" />
@@ -31,6 +32,11 @@
 
   <ItemGroup>
     <None Include="Components\Pages\faq\Detail.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Pages\administrator\" />
+    <Folder Include="Components\Pages\dictionary\" />
   </ItemGroup>
 
 </Project>
