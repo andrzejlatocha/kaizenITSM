@@ -20,14 +20,14 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketsCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketsCategory>>> GetTicketsCategory(string Status)
+        public async Task<ActionResult<IEnumerable<TicketsCategory>>> Select(string Status)
         {
             return await _context.TicketsCategory.Where(w => w.Status == Status || Status == "*").ToListAsync();
         }
 
         // GET: api/TicketsCategories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketsCategory>> GetTicketsCategory(int id)
+        public async Task<ActionResult<TicketsCategory>> Get(int id)
         {
             var ticketsCategory = await _context.TicketsCategory.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace kaizenITSM.Api.Controllers.hd
         // PUT: api/TicketsCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicketsCategory(int id, TicketsCategory ticketsCategory)
+        public async Task<IActionResult> Update(int id, TicketsCategory ticketsCategory)
         {
             if (id != ticketsCategory.ID)
             {
@@ -73,17 +73,17 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/TicketsCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TicketsCategory>> PostTicketsCategory(TicketsCategory ticketsCategory)
+        public async Task<ActionResult<TicketsCategory>> Insert(TicketsCategory ticketsCategory)
         {
             _context.TicketsCategory.Add(ticketsCategory);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTicketsCategory", new { id = ticketsCategory.ID }, ticketsCategory);
+            return CreatedAtAction("Get", new { id = ticketsCategory.ID }, ticketsCategory);
         }
 
         // DELETE: api/TicketsCategories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketsCategory(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var ticketsCategory = await _context.TicketsCategory.FindAsync(id);
             if (ticketsCategory == null)

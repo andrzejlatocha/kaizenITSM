@@ -241,4 +241,46 @@ AS
 	 WHERE too.IsHardware = 1
 GO
 
+CREATE VIEW [identity].vUserRoles
+AS
+	SELECT u.LoginName
+		 , u.FirstName
+		 , u.LastName
+		 , u.Description
+		 , u.Phone
+		 , u.Email
+		 , u.Blocked 
+		 , u.IsEditing
+		 , u.Status
+		 , u.rowguid
+		 , ur.UserID
+		 , ur.RoleID
+		 , r.Name AS RoleName
+		 , r.Description AS RoleDescription
+		 , r.IsEditing AS RoleIsEditing
+		 , r.Blocked AS RoleBlocked
+	FROM [identity].Users AS u INNER JOIN [identity].UserRoles AS ur ON u.ID = ur.UserID
+							   INNER JOIN [identity].Roles AS r ON ur.RoleID = r.ID
+																   AND r.Status = 'A';
 
+CREATE VIEW [identity].vUserGroups
+AS
+	SELECT u.LoginName
+		 , u.FirstName
+		 , u.LastName
+		 , u.Description
+		 , u.Phone
+		 , u.Email
+		 , u.Blocked 
+		 , u.IsEditing
+		 , u.Status
+		 , u.rowguid
+		 , ug.UserID
+		 , ug.GroupID
+		 , g.Name AS RoleName
+		 , g.Description AS RoleDescription
+		 , g.IsEditing AS RoleIsEditing
+		 , g.Blocked AS RoleBlocked
+	FROM [identity].Users AS u INNER JOIN [identity].UserGroups AS ug ON u.ID = ug.UserID
+							   INNER JOIN [identity].Groups AS g ON ug.GroupID = g.ID
+																   AND g.Status = 'A';

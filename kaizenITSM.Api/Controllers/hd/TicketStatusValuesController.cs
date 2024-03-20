@@ -20,9 +20,9 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketStatusValues
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketStatusValues>>> Select()
+        public async Task<ActionResult<IEnumerable<TicketStatusValues>>> Select(string Status)
         {
-            return await _context.TicketStatusValues.ToListAsync();
+            return await _context.TicketStatusValues.Where(w => w.Status == Status).ToListAsync();
         }
 
         // GET: api/TicketStatusValues/5

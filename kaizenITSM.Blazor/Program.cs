@@ -1,8 +1,6 @@
 using kaizenITSM.Blazor.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Radzen;
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

@@ -2,7 +2,11 @@
 
 @rendermode RenderMode.InteractiveServer
 
+@using System.Drawing
+@using System.Drawing.Imaging
 @using kaizenITSM.Domain.Entities.hd
+@using kaizenITSM.Domain.Entities.account
+@using kaizenITSM.Domain.ViewModels.account
 
 @inject HttpClient _httpClient;
 @inject ILogger<Tickets> _logger
@@ -48,7 +52,7 @@ else
                             <div class="col-6">
                                 <RadzenFormField Text="Status" Class="w-100">
                                     <RadzenDropDown @bind-Value="data.Status" AllowClear="true" Name="status" Class="w-100"
-                                                    Data="@ticketStatusValues" TextProperty="Disclaimer" ValueProperty="ID"
+                                                    Data="@ticketStatusValues" TextProperty="Disclaimer" ValueProperty="Status"
                                                     AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                                     FilterOperator="StringFilterOperator.Contains">
                                     </RadzenDropDown>
@@ -78,12 +82,17 @@ else
                         <div class="row mt-1">
                             <div class="col-6">
                                 <RadzenFormField Text="Grupa" Class="w-100">
+                                    <RadzenDropDown @bind-Value="data.GroupID" AllowClear="true" Name="group" Class="w-100"
+                                                    Data="@groups" TextProperty="Description" ValueProperty="ID" AllowVirtualization="true"
+                                                    AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                    FilterOperator="StringFilterOperator.Contains" Change="@(args => { OnGroupsChange(data.GroupID); })">
+                                    </RadzenDropDown>
                                 </RadzenFormField>
                             </div>
                             <div class="col-6">
                                 <RadzenFormField Text="Kategoria" Class="w-100">
                                     <RadzenDropDown @bind-Value="data.TicketCategoryID" AllowClear="true" Name="ticketCategory" Class="w-100"
-                                                    Data="@ticketsCategory" TextProperty="Name" ValueProperty="ID"
+                                                    Data="@ticketsCategory" TextProperty="Name" ValueProperty="ID" AllowVirtualization="true"
                                                     AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                                     FilterOperator="StringFilterOperator.Contains">
                                     </RadzenDropDown>
@@ -92,8 +101,19 @@ else
                         </div>
                         <div class="row mt-1">
                             <div class="col-12">
-                                <RadzenFormField Text="Technik" Class="w-100">
-                                </RadzenFormField>
+                                    <RadzenFormField Text="Osoba odpowiedzialna" Class="w-100">
+                                        @if (users == null)
+                                        {
+                                            <RadzenLabel Text="wybierz najpierw grupę">
+                                            </RadzenLabel>
+                                        }
+                                    else
+                                        {
+                                            <RadzenDropDown @bind-Value=@userList Data=@users TextProperty="UserName" ValueProperty="ID" Name="usersList"
+                                                            Multiple="true" AllowClear="true" Chips="true" Class="w-100"
+                                                            AllowVirtualization="true" MaxSelectedLabels="7" SelectAllText="Wybierz wszystkich" />
+                                        }
+                                    </RadzenFormField>
                             </div>
                         </div>
                         <div class="row mt-1">
@@ -107,16 +127,26 @@ else
                         <div class="row mt-1">
                             <div class="col-12">
                                 <RadzenFormField Text="Opis" Class="w-100">
-                                    <RadzenHtmlEditor @bind-Value=@ticketDisclaimer style="height: 300px;" UploadUrl="upload/image" />
+                                    <RadzenHtmlEditor @bind-Value=@ticketDisclaimer style="height: 250px;" UploadUrl="upload/image" />
                                 </RadzenFormField>
                             </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-12">
-                                <RadzenFormField Text="Załączniki" Class="w-100">
-                                    <RadzenFileInput TValue="string" class="w-100"
-                                                     InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
-                                </RadzenFormField>
+                                <RadzenLabel Text="Załączniki">
+                                </RadzenLabel>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <RadzenFileInput @bind-Value=@uploadImage TValue="string" class="w-100" @bind-FileName=@fileName @bind-FileSize=@fileSize MaxWidth="800"
+                                                 Change=@(args => OnFileChange(args, "FileInput")) Error=@(args => OnFileError(args, "FileInput"))
+                                                 ChooseText="Otwórz" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Wybierz plik" }})">
+                                </RadzenFileInput>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12">
                             </div>
                         </div>
                     </EditForm>
@@ -130,18 +160,132 @@ else
     private bool errorVisible = false;
     private string? errorMessage = string.Empty;
 
+    RadzenUpload upload;
+    private IList<int>? userList = new int[] { };
+    private string? uploadImage { get; set; }
+    string fileName;
+    long? fileSize;
+    string htmlValue = "";
+
     private Tickets data = new Tickets();
+
     private IEnumerable<TypesOfTicket> typesOfTicket;
     private IEnumerable<PrioritiesOfTicket> prioritiesOfTicket;
     private IEnumerable<TicketStatusValues> ticketStatusValues;
     private IEnumerable<TicketsCategory> ticketsCategory;
     private IEnumerable<TicketsSource> ticketsSource;
+    private IEnumerable<Groups> groups;
+    private IEnumerable<UserGroupsViewModel>? users;
 
     private string? ticketDisclaimer;
 
     protected override async Task OnInitializedAsync()
     {
         typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"/api/TypesOfTickets/Select?Status=A");
+        prioritiesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<PrioritiesOfTicket>>($"/api/PrioritiesOfTickets/Select?Status=A");
+        ticketStatusValues = await _httpClient.GetFromJsonAsync<IEnumerable<TicketStatusValues>>($"/api/TicketStatusValues/Select?Status=A");
+        ticketsCategory = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsCategory>>($"/api/TicketsCategories/Select?Status=A");
+        ticketsSource = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsSource>>($"/api/TicketsSources/Select?Status=A");
+        
+        groups = await _httpClient.GetFromJsonAsync<IEnumerable<Groups>>($"/api/Groups/Select?Status=A");        
+    }
+
+    private async void OnGroupsChange(int ID)
+    {
+        users = Task.Run(async () => await _httpClient.GetFromJsonAsync<IEnumerable<UserGroupsViewModel>>($"/api/Users/SelectByGroup/{ID}?Status=A")).Result;
+    }
+
+    void OnFileChange(string value, string name)
+    {
+        errorVisible = false;
+        fileName = "";
+        fileSize = null;
+
+        string fileType = "data:image/png;base64,";
+
+        if (value.Contains("data:image/jpeg;base64,"))
+        {
+            fileType = "data:image/jpeg;base64,";
+        }
+
+        if (value.Contains("data:image/png;base64,"))
+        {
+            fileType = "data:image/png;base64,";
+        }
+
+        if (value.Contains("data:image/gif;base64,"))
+        {
+            fileType = "data:image/gif;base64,";
+        }
+
+        if (value.Contains("data:image/tiff;base64,"))
+        {
+            fileType = "data:image/tiff;base64,";
+        }
+
+        var base64 = value.Replace("data:image/jpeg;base64,", "").Replace("data:image/png;base64,", "").Replace("data:image/gif;base64,", "").Replace("data:image/tiff;base64,", "");
+
+        var image = Convert.FromBase64String(base64);
+
+        MemoryStream momoryStream = new MemoryStream(image);
+        Image uploadImage = Image.FromStream(momoryStream);
+
+        Image resizedImage = uploadImage;
+
+        if (fileType != "data:image/gif;base64,")
+        {
+            var width = uploadImage.Width;
+            var height = uploadImage.Height;
+
+            if (width > 1280)
+            {
+                height = (int)(1280 / (double)uploadImage.Width * (double)uploadImage.Height);
+                width = 1280;
+            }
+
+            if (height > 400)
+            {
+                width = (int)(400 / (double)uploadImage.Height * (double)uploadImage.Width);
+                height = 400;
+            }
+
+            resizedImage = uploadImage.GetThumbnailImage(width, height, null, IntPtr.Zero);
+        }
+
+        var imageStream = new MemoryStream();
+
+        switch (fileType)
+        {
+            case "data:image/jpeg;base64,":
+                resizedImage.Save(imageStream, ImageFormat.Jpeg);
+                break;
+            case "data:image/png;base64,":
+                resizedImage.Save(imageStream, ImageFormat.Png);
+                break;
+            case "data:image/gif;base64,":
+                resizedImage.Save(imageStream, ImageFormat.Gif);
+                break;
+            case "data:image/tiff;base64,":
+                resizedImage.Save(imageStream, ImageFormat.Tiff);
+                break;
+            default:
+                resizedImage.Save(imageStream, ImageFormat.Png);
+                break;
+        }     
+
+        imageStream.Position = 0;
+
+        var imageBytes = imageStream.ToArray();
+
+        //showImage = fileType + Convert.ToBase64String(imageBytes);
+
+        //data.ksjSlajd = showImage;
+    }
+
+    void OnFileError(UploadErrorEventArgs args, string name)
+    {
+        errorMessage = args.Message;
+        errorVisible = true;
     }
 
     private async void HandleValidSubmit(EditContext context)

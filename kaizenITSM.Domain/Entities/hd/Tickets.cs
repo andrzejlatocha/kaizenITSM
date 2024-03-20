@@ -18,6 +18,7 @@ namespace kaizenITSM.Domain.Entities.hd
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string Number { get; set; }
+        public int GroupID { get; set; }
         public int TypeOfTicketID { get; set; }
         public int PriorityOfTicketID { get; set; }
         public int TicketCategoryID { get; set; }

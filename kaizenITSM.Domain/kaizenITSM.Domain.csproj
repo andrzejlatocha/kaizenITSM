@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\account\" />
-    <Folder Include="Entities\account\" />
   </ItemGroup>
 
   <ItemGroup>

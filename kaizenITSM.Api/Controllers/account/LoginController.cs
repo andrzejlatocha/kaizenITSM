@@ -1,5 +1,5 @@
 ﻿using kaizenITSM.Api.Data;
-using kaizenITSM.Domain.Models.account;
+using kaizenITSM.Domain.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

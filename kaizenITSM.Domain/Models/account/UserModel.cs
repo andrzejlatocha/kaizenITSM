@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace kaizenITSM.Domain.Models.account
+namespace kaizenITSM.Domain.Models.Account
 {
     public class UserModel
     {

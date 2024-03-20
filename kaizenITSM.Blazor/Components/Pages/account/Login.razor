@@ -6,7 +6,6 @@
 @inject ILogger<LoginUserModel> _logger
 @inject NavigationManager _navigationManager
 @inject DialogService _dialogService
-@inject SignInManager<IdentityUser> _signInManager
 
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Authorization
@@ -14,7 +13,6 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @using kaizenITSM.Domain.Models.Account
-@using kaizenITSM.Domain.Models.account
 
 <div class="container px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
 	<div class="card card0 border-0">
@@ -67,10 +65,6 @@
 
 	private string? errorMessage;
 
-	//private readonly SignInManager<IdentityUser> _signInManager;
-	// private readonly RoleManager<IdentityRole> _roleManager;
-	// private readonly UserManager<IdentityUser> _userManager;
-
 	protected override async Task OnInitializedAsync()
 	{
 
@@ -81,7 +75,7 @@
 		errorMessage = "Popraw wszystkie błędy";
 	}
 
-	private async void OnValidSubmit(EditContext context)
+	private async Task OnValidSubmit()
 	{
 		_logger.LogInformation("Login Create Submit");
 

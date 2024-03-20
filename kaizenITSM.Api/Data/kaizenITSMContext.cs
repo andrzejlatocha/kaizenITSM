@@ -1,7 +1,9 @@
 ﻿using kaizenITSM.Domain.Entities;
+using kaizenITSM.Domain.Entities.account;
 using kaizenITSM.Domain.Entities.cmdb;
 using kaizenITSM.Domain.Entities.hd;
-using kaizenITSM.Domain.Models.account;
+using kaizenITSM.Domain.Models.Account;
+using kaizenITSM.Domain.ViewModels.account;
 using kaizenITSM.Domain.ViewModels.cmdb;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +28,9 @@ namespace kaizenITSM.Api.Data
         }
 
         //Entities
+        public virtual DbSet<Groups> Groups { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
+
         public virtual DbSet<ActionFiles> ActionFiles { get; set; }
         public virtual DbSet<Actions> Actions { get; set; }
         public virtual DbSet<ActionUsers> ActionUsers { get; set; }
@@ -37,7 +42,7 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<TicketsSource> TicketsSource { get; set; }
         public virtual DbSet<TicketStatusValues> TicketStatusValues { get; set; }
         public virtual DbSet<TypesOfTicket> TypesOfTicket { get; set; }
-        
+
         public virtual DbSet<Files> Files { get; set; }
 
         public virtual DbSet<Objects> Objects { get; set; }
@@ -46,6 +51,8 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<UserModel> UserModel { get; set; }
 
         // ViewModels
+        public virtual DbSet<UserGroupsViewModel> UserGroupsViewModel { get; set; }
+
         public virtual DbSet<ObjectsHierarchyDetailViewModel> ObjectsHierarchyDetailViewModel { get; set; }
         public virtual DbSet<ObjectsHierarchyViewModel> ObjectsHierarchyViewModel { get; set; }
         public virtual DbSet<ObjectsDetailViewModel> ObjectsDetailViewModel { get; set; }

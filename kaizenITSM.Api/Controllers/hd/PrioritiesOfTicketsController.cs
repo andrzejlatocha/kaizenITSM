@@ -20,9 +20,9 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/PrioritiesOfTickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PrioritiesOfTicket>>> Select()
+        public async Task<ActionResult<IEnumerable<PrioritiesOfTicket>>> Select(string Status)
         {
-            return await _context.PrioritiesOfTicket.ToListAsync();
+            return await _context.PrioritiesOfTicket.Where(w => w.Status == Status).ToListAsync();
         }
 
         // GET: api/PrioritiesOfTickets/5

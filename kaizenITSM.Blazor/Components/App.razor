@@ -24,13 +24,22 @@
 
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 
-    <HeadOutlet @rendermode="InteractiveServer" />
+    <HeadOutlet />
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <Routes @rendermode="InteractiveServer" />
+    <Routes />
 
     <script src="_framework/blazor.web.js"></script>
 </body>
 
 </html>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/account")
+        ? null
+        : InteractiveServer;
+}
