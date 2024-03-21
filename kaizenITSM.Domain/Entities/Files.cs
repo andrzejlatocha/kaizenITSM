@@ -8,8 +8,8 @@ namespace kaizenITSM.Domain.Entities
         public int ID { get; set; }
         public string Extension { get; set; }
         public string Name { get; set; }
-        public string Number { get; set; }
-        public string SystemNumber { get; set; }
+        public string? Number { get; set; }
+        public string? SystemNumber { get; set; }
         public string FileName { get; set; }
         public string Link { get; set; }
         public byte? Version { get; set; }

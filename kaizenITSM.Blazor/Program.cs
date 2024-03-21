@@ -1,6 +1,7 @@
 using kaizenITSM.Blazor.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Radzen;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -24,16 +25,17 @@ string? baseApiUrl = configuration.GetSection("appSettings").GetValue<string>(ke
 services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseApiUrl) });
 
 services.AddHttpContextAccessor();
-//services.AddLocalization();
+services.AddLocalization();
 
-//var cultureInfo = new CultureInfo("pl-PL");
+var cultureInfo = new CultureInfo("pl-PL");
 
-//CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-//CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-//services.AddMemoryCache();
-
+services.AddMemoryCache();
+services.AddControllers();
 services.AddRadzenComponents();
+services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -44,7 +46,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.UseStaticFiles();
 app.UseAntiforgery();
 app.UseAuthentication();

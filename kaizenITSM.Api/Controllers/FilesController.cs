@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace kaizenITSM.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class FilesController : ControllerBase
     {
@@ -18,16 +18,9 @@ namespace kaizenITSM.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Files
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Files>>> GetFiles()
-        {
-            return await _context.Files.ToListAsync();
-        }
-
         // GET: api/Files/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Files>> GetFiles(int id)
+        public async Task<ActionResult<Files>> Get(int id)
         {
             var files = await _context.Files.FindAsync(id);
 
@@ -42,7 +35,7 @@ namespace kaizenITSM.Api.Controllers
         // PUT: api/Files/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFiles(int id, Files files)
+        public async Task<IActionResult> Update(int id, Files files)
         {
             if (id != files.ID)
             {
@@ -73,17 +66,17 @@ namespace kaizenITSM.Api.Controllers
         // POST: api/Files
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Files>> PostFiles(Files files)
+        public async Task<ActionResult<Files>> Insert(Files files)
         {
             _context.Files.Add(files);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFiles", new { id = files.ID }, files);
+            return CreatedAtAction("Get", new { id = files.ID }, files);
         }
 
         // DELETE: api/Files/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFiles(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var files = await _context.Files.FindAsync(id);
             if (files == null)

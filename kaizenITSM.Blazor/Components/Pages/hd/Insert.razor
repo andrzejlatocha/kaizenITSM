@@ -4,6 +4,8 @@
 
 @using System.Drawing
 @using System.Drawing.Imaging
+@using Newtonsoft.Json;
+@using System.Text;
 @using kaizenITSM.Domain.Entities.hd
 @using kaizenITSM.Domain.Entities.account
 @using kaizenITSM.Domain.ViewModels.account
@@ -12,6 +14,8 @@
 @inject ILogger<Tickets> _logger
 @inject NavigationManager _navigationManager
 @inject DialogService _dialogService
+
+<RadzenDialog />
 
 @if (data == null)
 {
@@ -104,8 +108,10 @@ else
                                     <RadzenFormField Text="Osoba odpowiedzialna" Class="w-100">
                                         @if (users == null)
                                         {
-                                            <RadzenLabel Text="wybierz najpierw grupę">
-                                            </RadzenLabel>
+                                            <div class="pt-1">
+                                                <RadzenLabel Text="wybierz najpierw grupę">
+                                                </RadzenLabel>
+                                        </div>
                                         }
                                     else
                                         {
@@ -127,7 +133,40 @@ else
                         <div class="row mt-1">
                             <div class="col-12">
                                 <RadzenFormField Text="Opis" Class="w-100">
-                                    <RadzenHtmlEditor @bind-Value=@ticketDisclaimer style="height: 250px;" UploadUrl="upload/image" />
+                                    <RadzenHtmlEditor @bind-Value=@ticketDisclaimer style="height: 250px;" UploadUrl="upload/image">
+                                        <RadzenHtmlEditorUndo />
+                                        <RadzenHtmlEditorRedo />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorFontName />
+                                        <RadzenHtmlEditorFontSize />
+                                        <RadzenHtmlEditorFormatBlock />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorAlignLeft />
+                                        <RadzenHtmlEditorAlignCenter />
+                                        <RadzenHtmlEditorAlignRight />
+                                        <RadzenHtmlEditorJustify />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorIndent />
+                                        <RadzenHtmlEditorOutdent />
+                                        <RadzenHtmlEditorUnorderedList />
+                                        <RadzenHtmlEditorOrderedList />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorBold />
+                                        <RadzenHtmlEditorItalic />
+                                        <RadzenHtmlEditorUnderline />
+                                        <RadzenHtmlEditorStrikeThrough />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorColor />
+                                        <RadzenHtmlEditorBackground />
+                                        <RadzenHtmlEditorRemoveFormat />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorSubscript />
+                                        <RadzenHtmlEditorSuperscript />
+                                        <RadzenHtmlEditorSeparator />
+                                        <RadzenHtmlEditorLink />
+                                        <RadzenHtmlEditorUnlink />
+                                        <RadzenHtmlEditorImage />
+                                    </RadzenHtmlEditor>
                                 </RadzenFormField>
                             </div>
                         </div>
@@ -139,14 +178,19 @@ else
                         </div>
                         <div class="row mt-1">
                             <div class="col-12">
-                                <RadzenFileInput @bind-Value=@uploadImage TValue="string" class="w-100" @bind-FileName=@fileName @bind-FileSize=@fileSize MaxWidth="800"
-                                                 Change=@(args => OnFileChange(args, "FileInput")) Error=@(args => OnFileError(args, "FileInput"))
-                                                 ChooseText="Otwórz" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Wybierz plik" }})">
-                                </RadzenFileInput>
+                                <RadzenUpload @ref="upload" Auto="false" Multiple="true" Url="upload/multiple" class="w-100"
+                                              InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" 
+                                              ChooseText="Wybierz plik"/>
                             </div>
                         </div>
-                        <div class="row mt-1">
+                        <div class="row mt-5 mb-3">
                             <div class="col-12">
+                                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem">
+                                    <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Medium" Variant="Variant.Flat"
+                                                  Icon="save" ButtonStyle="ButtonStyle.Primary" Text="Zapisz" />
+                                    <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                                                  Icon="cancel" Text="Anuluj" Click="@OnClose" />
+                                </RadzenStack>
                             </div>
                         </div>
                     </EditForm>
@@ -181,129 +225,69 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"/api/TypesOfTickets/Select?Status=A");
-        prioritiesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<PrioritiesOfTicket>>($"/api/PrioritiesOfTickets/Select?Status=A");
-        ticketStatusValues = await _httpClient.GetFromJsonAsync<IEnumerable<TicketStatusValues>>($"/api/TicketStatusValues/Select?Status=A");
-        ticketsCategory = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsCategory>>($"/api/TicketsCategories/Select?Status=A");
-        ticketsSource = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsSource>>($"/api/TicketsSources/Select?Status=A");
-        
-        groups = await _httpClient.GetFromJsonAsync<IEnumerable<Groups>>($"/api/Groups/Select?Status=A");        
+        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"TypesOfTickets/Select?Status=A");
+        prioritiesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<PrioritiesOfTicket>>($"PrioritiesOfTickets/Select?Status=A");
+        ticketStatusValues = await _httpClient.GetFromJsonAsync<IEnumerable<TicketStatusValues>>($"TicketStatusValues/Select?Status=A");
+        ticketsCategory = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsCategory>>($"TicketsCategories/Select?Status=A");
+        ticketsSource = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsSource>>($"TicketsSources/Select?Status=A");
+
+        groups = await _httpClient.GetFromJsonAsync<IEnumerable<Groups>>($"Groups/Select?Status=A"); 
+        users = await _httpClient.GetFromJsonAsync<IEnumerable<UserGroupsViewModel>>($"Users/SelectByGroup/{0}?Status=A");
     }
 
-    private async void OnGroupsChange(int ID)
+    private async void OnGroupsChange(int? ID)
     {
-        users = Task.Run(async () => await _httpClient.GetFromJsonAsync<IEnumerable<UserGroupsViewModel>>($"/api/Users/SelectByGroup/{ID}?Status=A")).Result;
-    }
-
-    void OnFileChange(string value, string name)
-    {
-        errorVisible = false;
-        fileName = "";
-        fileSize = null;
-
-        string fileType = "data:image/png;base64,";
-
-        if (value.Contains("data:image/jpeg;base64,"))
+        if (ID != null)
         {
-            fileType = "data:image/jpeg;base64,";
+            users = Task.Run(async () => await _httpClient.GetFromJsonAsync<IEnumerable<UserGroupsViewModel>>($"Users/SelectByGroup/{ID}?Status=A")).Result;
         }
-
-        if (value.Contains("data:image/png;base64,"))
-        {
-            fileType = "data:image/png;base64,";
-        }
-
-        if (value.Contains("data:image/gif;base64,"))
-        {
-            fileType = "data:image/gif;base64,";
-        }
-
-        if (value.Contains("data:image/tiff;base64,"))
-        {
-            fileType = "data:image/tiff;base64,";
-        }
-
-        var base64 = value.Replace("data:image/jpeg;base64,", "").Replace("data:image/png;base64,", "").Replace("data:image/gif;base64,", "").Replace("data:image/tiff;base64,", "");
-
-        var image = Convert.FromBase64String(base64);
-
-        MemoryStream momoryStream = new MemoryStream(image);
-        Image uploadImage = Image.FromStream(momoryStream);
-
-        Image resizedImage = uploadImage;
-
-        if (fileType != "data:image/gif;base64,")
-        {
-            var width = uploadImage.Width;
-            var height = uploadImage.Height;
-
-            if (width > 1280)
-            {
-                height = (int)(1280 / (double)uploadImage.Width * (double)uploadImage.Height);
-                width = 1280;
-            }
-
-            if (height > 400)
-            {
-                width = (int)(400 / (double)uploadImage.Height * (double)uploadImage.Width);
-                height = 400;
-            }
-
-            resizedImage = uploadImage.GetThumbnailImage(width, height, null, IntPtr.Zero);
-        }
-
-        var imageStream = new MemoryStream();
-
-        switch (fileType)
-        {
-            case "data:image/jpeg;base64,":
-                resizedImage.Save(imageStream, ImageFormat.Jpeg);
-                break;
-            case "data:image/png;base64,":
-                resizedImage.Save(imageStream, ImageFormat.Png);
-                break;
-            case "data:image/gif;base64,":
-                resizedImage.Save(imageStream, ImageFormat.Gif);
-                break;
-            case "data:image/tiff;base64,":
-                resizedImage.Save(imageStream, ImageFormat.Tiff);
-                break;
-            default:
-                resizedImage.Save(imageStream, ImageFormat.Png);
-                break;
-        }     
-
-        imageStream.Position = 0;
-
-        var imageBytes = imageStream.ToArray();
-
-        //showImage = fileType + Convert.ToBase64String(imageBytes);
-
-        //data.ksjSlajd = showImage;
-    }
-
-    void OnFileError(UploadErrorEventArgs args, string name)
-    {
-        errorMessage = args.Message;
-        errorVisible = true;
     }
 
     private async void HandleValidSubmit(EditContext context)
     {
         _logger.LogInformation("Ticket Create Submit");
 
-        //var ret = await _pracownikService.Insert(data);
+        try
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
-        // if (ret.Code == StatusCodes.Status201Created)
-        // {
-        //     await _dialogService.Alert("Dane zostały zapisane poprawnie.", "Informacja", new AlertOptions() { OkButtonText = "OK" });
-        //     _navigationManager.NavigateTo("/hd");
-        // }
-        // else
-        // {
-        //     errorMessage = ret.Message;
-        //     errorVisible = true;
-        // }
+            var response = await _httpClient.PostAsync("Tickets/Insert", content);
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var newObject = JsonConvert.DeserializeObject<Tickets>(apiResponse);
+
+                upload.Url = $"upload/{newObject.ID}";
+
+                upload.Upload();
+
+                foreach(int id in userList)
+                {
+                    TicketAssignmentUsers tau = new TicketAssignmentUsers();
+
+                    tau.TicketID = newObject.ID;
+                    tau.UserID = id;
+
+                    StringContent content2= new StringContent(JsonConvert.SerializeObject(tau), Encoding.UTF8, "application/json");
+
+                    var response2 = await _httpClient.PostAsync("TicketAssignmentUsersController/Insert", content2);
+                    string apiResponse2 = await response2.Content.ReadAsStringAsync();
+                }
+
+                _navigationManager.NavigateTo("/hd");
+            }
+            else
+            {
+                errorMessage = response.RequestMessage.ToString();
+                errorVisible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            errorVisible = true;
+        }
     }
 
     private void HandleInvalidSubmit(EditContext context)
@@ -312,7 +296,7 @@ else
         errorVisible = true;
     }
 
-    void Close()
+    void OnClose()
     {
         _navigationManager.NavigateTo("/hd");
     }

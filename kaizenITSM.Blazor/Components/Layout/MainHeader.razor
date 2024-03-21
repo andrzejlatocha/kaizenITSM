@@ -5,12 +5,12 @@
 <nav class="navbar navbar-dark navbar-expand-md w-100">
     <div class="container-fluid">
         <div class="row w-100">
-            <div class="col-10">
+            <div class="col-8">
                 <a class="navbar-brand" href="/">
                     <img src="Images/logo.png" />
                 </a>
             </div>
-            <div class="col-2">               
+            <div class="col-4">               
                 <div id="navbar" class="collapse navbar-collapse float-end pt-1">
                     <div class="float-end">
                         <img id="ticket" src="images\header\ticket-24.png" />
@@ -31,6 +31,9 @@
                         <Authorized>
                             <div class="float-end ms-5">
                                 <img id="settings" src="images\user.png" width="32px" height="32px" class="rounded-circle" />
+                            </div>
+                            <div class="float-end ms-1">
+                                @context.User.FindFirst("name").Value
                             </div>
                         </Authorized>
                         <NotAuthorized>
