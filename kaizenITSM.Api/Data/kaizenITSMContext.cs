@@ -5,6 +5,7 @@ using kaizenITSM.Domain.Entities.hd;
 using kaizenITSM.Domain.Models.Account;
 using kaizenITSM.Domain.ViewModels.account;
 using kaizenITSM.Domain.ViewModels.cmdb;
+using kaizenITSM.Domain.ViewModels.hd;
 using Microsoft.EntityFrameworkCore;
 
 namespace kaizenITSM.Api.Data
@@ -57,6 +58,8 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<ObjectsHierarchyViewModel> ObjectsHierarchyViewModel { get; set; }
         public virtual DbSet<ObjectsDetailViewModel> ObjectsDetailViewModel { get; set; }
         public virtual DbSet<ObjectPropertiesViewModel> ObjectPropertiesViewModel { get; set; }
+
+        public virtual DbSet<TicketsViewModel> TicketsViewModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

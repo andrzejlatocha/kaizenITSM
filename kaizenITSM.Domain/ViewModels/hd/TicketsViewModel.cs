@@ -3,20 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace kaizenITSM.Domain.Entities.hd
+namespace kaizenITSM.Domain.ViewModels.hd
 {
-    [Table("Tickets", Schema = "hd")]
-    public class Tickets //: AuditableEntity
+    [Table("vTicketsList", Schema = "hd")]
+    public class TicketsViewModel
     {
-        public Tickets()
-        {
-            this.Date = DateTime.Now;
-            this.PriorityOfTicketID = 2;
-            this.Status = "A";
-        }
-
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string? Number { get; set; }
         public int GroupID { get; set; }

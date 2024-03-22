@@ -14,7 +14,7 @@ namespace kaizenITSM.Domain.Entities.hd
         public int ActionID { get; set; }
         public int TicketID { get; set; }
         public int UserID { get; set; }
-        public int ActionType { get; set; }
+        public int ActionTypeID { get; set; }
         public string Information { get; set; }
         public DateTime Date { get; set; }
         public string Status { get; set; }

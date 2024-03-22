@@ -704,12 +704,36 @@ GO
 ALTER TABLE [hd].[TypesOfTicket] ADD  CONSTRAINT [DF_TypesOfTicket_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
+CREATE TABLE [hd].[ActionTypes](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Description] [varchar](150) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_ActionTypes] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[ActionTypes] ADD  CONSTRAINT [DF_ActionTypes_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[ActionTypes] ADD  CONSTRAINT [DF_ActionTypes_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+
 CREATE TABLE [hd].[Actions](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[ActionID] [int] NULL,
 	[TicketID] [int] NULL,
 	[UserID] [int] NULL,
-	[ActionType] [int] NULL,
+	[ActionTypeID] [int] NULL,
 	[Information] [varchar](max) NULL,
 	[Date] [datetime] NULL,
 	[Status] [char](1) NULL,
@@ -733,6 +757,34 @@ ALTER TABLE [hd].[Actions] ADD  CONSTRAINT [DF_Actions_Deleted]  DEFAULT ((0)) F
 GO
 
 ALTER TABLE [hd].[Actions] ADD  CONSTRAINT [DF_Actions_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[Actions]  WITH CHECK ADD  CONSTRAINT [FK_Actions_Actions] FOREIGN KEY([ActionID])
+REFERENCES [hd].[Actions] ([ID])
+GO
+
+ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_Actions]
+GO
+
+ALTER TABLE [hd].[Actions]  WITH CHECK ADD  CONSTRAINT [FK_Actions_ActionTypes] FOREIGN KEY([ActionTypeID])
+REFERENCES [hd].[ActionTypes] ([ID])
+GO
+
+ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_ActionTypes]
+GO
+
+ALTER TABLE [hd].[Actions]  WITH CHECK ADD  CONSTRAINT [FK_Actions_Tickets] FOREIGN KEY([TicketID])
+REFERENCES [hd].[Tickets] ([ID])
+GO
+
+ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_Tickets]
+GO
+
+ALTER TABLE [hd].[Actions]  WITH CHECK ADD  CONSTRAINT [FK_Actions_Users] FOREIGN KEY([UserID])
+REFERENCES [identity].[Users] ([ID])
+GO
+
+ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_Users]
 GO
 
 CREATE TABLE [hd].[ActionFiles](

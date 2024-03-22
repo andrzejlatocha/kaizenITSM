@@ -284,3 +284,28 @@ AS
 	FROM [identity].Users AS u INNER JOIN [identity].UserGroups AS ug ON u.ID = ug.UserID
 							   INNER JOIN [identity].Groups AS g ON ug.GroupID = g.ID
 																   AND g.Status = 'A';
+																   
+CREATE VIEW hd.vTicketList
+AS
+	 SELECT t.ID
+		  , t.Number
+		  , t.GroupID
+		  , g.Name AS GroupName
+		  , t.TypeOfTicketID
+		  , tot.Description AS TypeOfTicket
+		  , t.PriorityOfTicketID
+		  , pot.Description AS PriorityOfTicket
+		  , t.TicketCategoryID
+		  , tot.Description AS TicketCategory
+		  , t.TicketSourceID
+		  , ts.Name AS TicketSource
+		  , t.[Date]
+		  , t.Topic
+		  , t.Status
+		  , tsv.Disclaimer
+	 FROM hd.Tickets AS t INNER JOIN [identity].Groups AS g ON t.GroupID = g.ID
+						  INNER JOIN hd.TypesOfTicket AS tot ON t.TypeOfTicketID = tot.ID
+						  INNER JOIN hd.PrioritiesOfTicket AS pot ON t.PriorityOfTicketID = pot.ID
+						  INNER JOIN hd.TicketsCategory AS tc ON t.TicketCategoryID = tc.ID
+						  INNER JOIN hd.TicketsSource AS ts ON t.TicketSourceID = ts.ID
+						  INNER JOIN hd.TicketStatusValues AS tsv ON pot.Status = tsv.Status;

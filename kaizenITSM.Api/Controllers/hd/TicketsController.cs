@@ -1,5 +1,6 @@
 ﻿using kaizenITSM.Api.Data;
 using kaizenITSM.Domain.Entities.hd;
+using kaizenITSM.Domain.ViewModels.hd;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,6 +24,13 @@ namespace kaizenITSM.Api.Controllers.hd
         public async Task<ActionResult<IEnumerable<Tickets>>> Select()
         {
             return await _context.Tickets.ToListAsync();
+        }
+
+        // GET: api/Tickets
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TicketsViewModel>>> SelectByParam(int userID, int timeScope, string Status)
+        {
+            return await _context.TicketsViewModel.ToListAsync();
         }
 
         // GET: api/Tickets/5
