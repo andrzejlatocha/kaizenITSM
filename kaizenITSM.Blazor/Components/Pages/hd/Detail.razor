@@ -4,7 +4,46 @@
 
 @inject HttpClient _httpClient;
 
-<h3>Detail</h3>
+<div class="row ms-2">
+    <div class="col-12">
+        <div class="row mt-2">
+            <div class="col-12">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal"
+                             class="w-100">
+                    <RadzenButton Variant="Variant.Outlined" Text="Nowy incydent" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                </RadzenStack>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-12">
+                <RadzenTabsItem RenderMode="TabRenderMode.Client" class="w-100">
+                    <Tabs>
+                        <RadzenTabsItem Text="Orders">
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Szczegóły">
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Zadania">
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Rozwiązanie">
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Rejestr pracy">
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabsItem>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]

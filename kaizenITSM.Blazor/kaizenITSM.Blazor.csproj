@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.5.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Radzen.Blazor" Version="4.28.4" />
+    <PackageReference Include="Radzen.Blazor" Version="4.28.5" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.3" />
   </ItemGroup>
 
