@@ -218,6 +218,7 @@ else
     private IEnumerable<TicketStatusValues> ticketStatusValues;
     private IEnumerable<TicketsCategory> ticketsCategory;
     private IEnumerable<TicketsSource> ticketsSource;
+
     private IEnumerable<Groups> groups;
     private IEnumerable<UserGroupsViewModel>? users;
 
@@ -249,6 +250,8 @@ else
 
         try
         {
+            data.Disclaimer = ticketDisclaimer;
+
             StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync("Tickets/Insert", content);

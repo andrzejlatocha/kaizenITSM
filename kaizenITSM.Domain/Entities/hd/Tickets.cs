@@ -1,4 +1,5 @@
-﻿using System;
+﻿using kaizenITSM.Domain.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -6,12 +7,12 @@ using System.Linq;
 namespace kaizenITSM.Domain.Entities.hd
 {
     [Table("Tickets", Schema = "hd")]
-    public class Tickets //: AuditableEntity
+    public class Tickets : AuditableEntity
     {
         public Tickets()
         {
             this.Date = DateTime.Now;
-            this.PriorityOfTicketID = 2;
+            this.PriorityOfTicketID = 4;
             this.Status = "A";
         }
 
@@ -27,6 +28,5 @@ namespace kaizenITSM.Domain.Entities.hd
         public DateTime Date { get; set; }
         public string Topic { get; set; }
         public string Disclaimer { get; set; }
-        public string Status { get; set; }
     }
 }

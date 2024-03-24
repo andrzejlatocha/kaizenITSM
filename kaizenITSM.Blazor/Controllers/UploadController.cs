@@ -103,7 +103,7 @@ namespace kaizenITSM.Blazor.Controllers
             try
             {
                 var subfolder = DateTime.Now.ToString().Replace(".", "").Replace(":", "").Replace(" ", "").Replace("-", "");
-                var folder = Path.Combine(_environment.WebRootPath, "upload/ticket", subfolder);
+                var folder = Path.Combine(_environment.WebRootPath, "upload\ticket", subfolder);
 
                 if (!Directory.Exists(folder))
                 {
@@ -120,9 +120,9 @@ namespace kaizenITSM.Blazor.Controllers
 
                         Files f = new Files();
                         f.Extension = Path.GetExtension(file.FileName);
-                        f.Name = Path.GetFileNameWithoutExtension(file.FileName);
+                        f.Name = Path.GetFileNameWithoutExtension(file.FileName).Replace(".", "");
                         f.FileName = file.FileName;
-                        f.Link = $"{folder}/{fileName}";
+                        f.Link = $@"upload\ticket\{subfolder}\{fileName}";
                         f.Version = 1;
 
                         StringContent content1 = new StringContent(JsonConvert.SerializeObject(f), Encoding.UTF8, "application/json");

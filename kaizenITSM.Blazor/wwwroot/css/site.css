@@ -79,3 +79,19 @@ html, body {
     text-align: center;
     margin: 2rem;
 }
+
+.action-type-1 {
+    background-color: #D9FFEB;
+}
+
+.action-type-2 {
+    background-color: #D9FFEB;
+}
+
+.action-type-3 {
+    background-color: #91E5FF;
+}
+
+.action-type-4 {
+    background-color: #F3F1F9;
+}

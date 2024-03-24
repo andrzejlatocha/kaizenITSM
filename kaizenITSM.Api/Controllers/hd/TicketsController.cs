@@ -28,7 +28,7 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketsViewModel>>> SelectByParam(int userID, int timeScope, string Status)
+        public async Task<ActionResult<IEnumerable<TicketsViewModel>>> SelectByParam(int? userID, int? timeScope, string? Status)
         {
             return await _context.TicketsViewModel.ToListAsync();
         }
@@ -38,6 +38,20 @@ namespace kaizenITSM.Api.Controllers.hd
         public async Task<ActionResult<Tickets>> Get(int id)
         {
             var tickets = await _context.Tickets.FindAsync(id);
+
+            if (tickets == null)
+            {
+                return NotFound();
+            }
+
+            return tickets;
+        }
+
+        // GET: api/Tickets/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TicketDetailsViewModel>> Detail(int id)
+        {
+            var tickets = await _context.TicketDetailsViewModel.FindAsync(id);            
 
             if (tickets == null)
             {

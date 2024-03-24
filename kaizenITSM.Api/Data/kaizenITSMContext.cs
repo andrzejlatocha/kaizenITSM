@@ -59,7 +59,9 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<ObjectsDetailViewModel> ObjectsDetailViewModel { get; set; }
         public virtual DbSet<ObjectPropertiesViewModel> ObjectPropertiesViewModel { get; set; }
 
+        public virtual DbSet<ActionsViewModel> ActionsViewModel { get; set; }
         public virtual DbSet<TicketsViewModel> TicketsViewModel { get; set; }
+        public virtual DbSet<TicketDetailsViewModel> TicketDetailsViewModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

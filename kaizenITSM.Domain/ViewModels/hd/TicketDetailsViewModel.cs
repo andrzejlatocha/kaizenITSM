@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace kaizenITSM.Domain.ViewModels.hd
 {
-    [Table("vTicketsList", Schema = "hd")]
-    public class TicketsViewModel
+    [Table("vTicketDetails", Schema = "hd")]
+    public class TicketDetailsViewModel
     {
         [Key]
         public int ID { get; set; }

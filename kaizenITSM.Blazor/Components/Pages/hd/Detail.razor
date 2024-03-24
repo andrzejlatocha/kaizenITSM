@@ -2,44 +2,197 @@
 
 @rendermode RenderMode.InteractiveServer
 
+@using kaizenITSM.Domain.Entities.account
+@using kaizenITSM.Domain.Entities.hd
+@using kaizenITSM.Domain.ViewModels.account
+@using kaizenITSM.Domain.ViewModels.hd
+
 @inject HttpClient _httpClient;
+
+@inject NavigationManager _navigationManager
 
 <div class="row ms-2">
     <div class="col-12">
         <div class="row mt-2">
-            <div class="col-12">
-                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal"
-                             class="w-100">
-                    <RadzenButton Variant="Variant.Outlined" Text="Nowy incydent" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Usuń" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
-                    <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+            <div class="col-9">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="1.5rem" JustifyContent="JustifyContent.Normal" 
+                             AlignItems="AlignItems.Normal" class="w-100">
+                    <RadzenButton Variant="Variant.Outlined" Text="" Icon="@("<i class=\"fa fa-backward\"></i>")"
+                                  ButtonStyle="ButtonStyle.Primary" Click="@OnReturn" />
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" JustifyContent="JustifyContent.Normal" AlignItems="AlignItems.Normal"
+                                 class="w-100">
+                        <RadzenButton Variant="Variant.Outlined" Text="Popraw" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Zamknij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Anuluj" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Podejmij" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                        <RadzenButton Variant="Variant.Outlined" Text="Przydziel" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small" />
+                    </RadzenStack>
                 </RadzenStack>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-12">
+            <div class="col-3">
 
             </div>
         </div>
         <div class="row mt-1">
-            <div class="col-12">
-                <RadzenTabsItem RenderMode="TabRenderMode.Client" class="w-100">
-                    <Tabs>
-                        <RadzenTabsItem Text="Orders">
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Text="Szczegóły">
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Text="Zadania">
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Text="Rozwiązanie">
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Text="Rejestr pracy">
-                        </RadzenTabsItem>
-                    </Tabs>
-                </RadzenTabsItem>
+            <div class="col-9">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        @if (data == null)
+                        {
+                            <LoadSmall />
+                        }
+                        else
+                        {
+                            <div class="float-left me-2 pt-2">
+                                <img src=@String.Format("images/ticket/type/{0}-48.png", @data.Icon) />
+                            </div>
+                            <div class="float-left">
+                                <p class="fs-2 fw-bold m-0">@data.Topic</p>
+                                <div class="d-inline-block text-mutted fs-6">
+                                    Priorytet: @data.PriorityOfTicket
+                                </div>
+                                <div class="d-inline-block text-mutted fs-6 ms-4">
+                                    Zgłaszający: @data.User
+                                </div>
+                                <div class="d-inline-block text-mutted fs-6">
+                                    @data.Date
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client" class="w-100">
+                            <Tabs>
+                                <RadzenTabsItem Text="Rozmowa">
+                                    <div class="row w-100">
+                                        <div class="col-12">
+                                            @if (actions == null)
+                                            {
+                                                <Load />
+                                            }
+                                            else
+                                            {
+                                                foreach (ActionsViewModel action in actions)
+                                                {
+                                                    
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Szczegóły">
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Zadania">
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Rozwiązanie">
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Akceptacje">
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Rejestr pracy">
+                                </RadzenTabsItem>
+                            </Tabs>
+                        </RadzenTabs>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                @if (data == null)
+                {
+                    <LoadSmall />
+                }
+                else
+                {
+                    <div class="row mt-4">
+                        <div class="col-5">
+                            Identyfikator
+                        </div>
+                        <div class="col-7">
+                            @String.Format("#{0}", @data.ID)
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Status" Class="w-100">
+                                <RadzenDropDown @bind-Value="data.Status" AllowClear="true" Name="status" Class="w-100"
+                                                Data="@ticketStatusValues" TextProperty="Disclaimer" ValueProperty="Status"
+                                                AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains">
+                                </RadzenDropDown>
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Grupa" Class="w-100">
+                                <RadzenDropDown @bind-Value="data.GroupID" AllowClear="true" Name="group" Class="w-100"
+                                                Data="@groups" TextProperty="Description" ValueProperty="ID" AllowVirtualization="true"
+                                                AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains" Change="@(args => { OnGroupsChange(data.GroupID); })">
+                                </RadzenDropDown>
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Typ zgłoszenia" Class="w-100">
+                                <RadzenDropDown @bind-Value="data.TypeOfTicketID" AllowClear="true" Name="typeOfTicketID" Class="w-100"
+                                                Data="@typesOfTicket" TextProperty="Description" ValueProperty="ID"
+                                                AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains">
+                                </RadzenDropDown>
+                            </RadzenFormField>
+
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Kategoria" Class="w-100">
+                                <RadzenDropDown @bind-Value="data.TicketCategoryID" AllowClear="true" Name="ticketCategory" Class="w-100"
+                                                Data="@ticketsCategory" TextProperty="Name" ValueProperty="ID" AllowVirtualization="true"
+                                                AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains">
+                                </RadzenDropDown>
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Przydzielone do" Class="w-100">
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Zadania" Class="w-100">
+                                <RadzenButton Text="0 / 3">
+                                </RadzenButton>
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <RadzenFormField Text="Przydzielone do" Class="w-100">
+                                <div class="row mt-0">
+                                    <div class="col-12">
+                                        Lista załączników
+                                    </div>
+                                </div>
+                            </RadzenFormField>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            Termin
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            Czas pracy
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -49,8 +202,35 @@
     [Parameter]
     public int ID { get; set; }
 
+    private TicketsViewModel data;
+    private IEnumerable<ActionsViewModel> actions;
+
+    private IEnumerable<TypesOfTicket> typesOfTicket;
+    private IEnumerable<PrioritiesOfTicket> prioritiesOfTicket;
+    private IEnumerable<TicketStatusValues> ticketStatusValues;
+    private IEnumerable<TicketsCategory> ticketsCategory;
+    private IEnumerable<TicketsSource> ticketsSource;
+
+    private IEnumerable<Groups> groups;
+    private IEnumerable<UserGroupsViewModel>? users;
+
     protected override async Task OnInitializedAsync()
     {
+        typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"TypesOfTickets/Select?Status=A");
+        prioritiesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<PrioritiesOfTicket>>($"PrioritiesOfTickets/Select?Status=A");
+        ticketStatusValues = await _httpClient.GetFromJsonAsync<IEnumerable<TicketStatusValues>>($"TicketStatusValues/Select?Status=A");
+        ticketsCategory = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsCategory>>($"TicketsCategories/Select?Status=A");
+        ticketsSource = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsSource>>($"TicketsSources/Select?Status=A");
 
+        data = await _httpClient.GetFromJsonAsync<TicketsViewModel>($"/api/Tickets/Detail/{ID}");
+        actions = await _httpClient.GetFromJsonAsync<IEnumerable<ActionsViewModel>>($"/api/Actions/SelectByTicket/{ID}");
+
+        groups = await _httpClient.GetFromJsonAsync<IEnumerable<Groups>>($"Groups/Select?Status=A");
+        users = await _httpClient.GetFromJsonAsync<IEnumerable<UserGroupsViewModel>>($"Users/SelectByGroup/{data.GroupID}?Status=A");
+    }
+
+    void OnReturn()
+    {
+        _navigationManager.NavigateTo("/hd");
     }
 }

@@ -51,7 +51,45 @@
             <div class="col-12">
                 @if (showList)
                 {
-                    
+                    <RadzenDataGrid @ref="grid" @bind-Value=@selectedItem AllowAlternatingRows="true" FilterMode="FilterMode.Advanced"
+                                    AllowFiltering="true" AllowSorting="true" TItem="TicketsViewModel" Data="@data"
+                                    Density="Density.Default" SelectionMode="Radzen.DataGridSelectionMode.Multiple" PageSize="24"
+                                    AllowColumnResize="true" AllowColumnReorder="true" AllowColumnPicking="false" 
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true"
+                                    AllowVirtualization="true" AllowRowSelectOnRowClick="true" LogicalFilterOperator="LogicalFilterOperator.And">
+                        <EmptyTemplate>
+                            <p class="grid-empty-template">Brak danych.</p>
+                        </EmptyTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Width="60px" Sortable="false" Filterable="false">
+                                <HeaderTemplate>
+                                    <RadzenCheckBox TabIndex="-1" TriState="false" TValue="bool?" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Select all items" }})"
+                                                    Value="@(@selectedItem == null || @selectedItem?.Any() != true ? false : !data.All(i => @selectedItem.Contains(i)) ? null : data.Any(i => @selectedItem.Contains(i)))"
+                                                    Change="@(args => @selectedItem = args == true ? data.ToList() : null)" />
+                                </HeaderTemplate>
+                                <Template Context="data">
+                                    <RadzenCheckBox TabIndex="-1" TriState="false" Value="@(@selectedItem != null && @selectedItem.Contains(data))" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Select item" }})"
+                                                    TValue="bool" Change=@(args => { if(!allowRowSelectOnRowClick) { grid.SelectRow(data); }}) />
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="ID" Title="ID" Width="90px" />
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="Icon" Title="Typ" Frozen="true" Width="40px">
+                                <Template Context="data">
+                                    <RadzenImage Path="@String.Format(@"images/ticket/type/{0}-24.png", data.Icon)" />
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="Topic" Title="Tytuł">
+                                <Template Context="data">
+                                    <RadzenLink Path=@String.Format("hd/detail/{0}", data.ID) Text="@data.Topic" />
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="User" Width="180px" Title="Utworzył" />
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="AssignmentUsers" Width="180px" Title="Przydzielone" />
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="StatusDisclaimer" Width="150px" Title="Status" />
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="CloseDate" Width="150px" Title="Zakończono" />
+                            <RadzenDataGridColumn TItem="TicketsViewModel" Property="Date" Width="150px" Title="Utworzono" />
+                        </Columns>
+                    </RadzenDataGrid>
                 }
                 @if (showCard)
                 {
@@ -71,8 +109,16 @@
     private bool showCard = false;
     private bool showKanban = false;
 
+    private int userID = -1;
     private int viewType = 1;
     private int timeScope = 30;
+    private string status = "A";
+
+    bool allowRowSelectOnRowClick = true;
+    RadzenDataGrid<TicketsViewModel> grid;
+
+    private IEnumerable<TicketsViewModel> data;
+    IList<TicketsViewModel>? selectedItem;
 
     private List<TicketViewTypeEnumerator> ticketViewType = new List<TicketViewTypeEnumerator>()
     {
@@ -94,6 +140,11 @@
         new TicketTimeScopeEnumerator(DateTime.Today.DayOfYear, "Ten rok"),
         new TicketTimeScopeEnumerator(999999, "Wszystkie")
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsViewModel>>($"Tickets/SelectByParam?userID={userID}&timeScope={timeScope}&Status={status}");
+    }
 
     void OnInsert()
     {
