@@ -1,0 +1,18 @@
+﻿@rendermode RenderMode.InteractiveServer
+
+@inject DialogService _dialogService
+
+<h3>Insert TASK</h3>
+
+<RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+              Icon="cancel" Text="Anuluj" Click="@OnClose" />
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+
+    void OnClose()
+    {
+        _dialogService.CloseSide(false);
+    }
+}

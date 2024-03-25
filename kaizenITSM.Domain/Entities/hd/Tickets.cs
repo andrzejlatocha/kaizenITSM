@@ -28,5 +28,7 @@ namespace kaizenITSM.Domain.Entities.hd
         public DateTime Date { get; set; }
         public string Topic { get; set; }
         public string Disclaimer { get; set; }
+        public DateTime? RequestedDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
     }
 }

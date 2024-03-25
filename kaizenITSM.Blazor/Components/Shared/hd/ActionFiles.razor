@@ -1,0 +1,36 @@
+﻿@using kaizenITSM.Domain.ViewModels.hd
+
+@inject HttpClient _httpClient;
+
+@if (actionFiles != null)
+{
+    @if (actionFiles.Count() > 0)
+    {
+        <p class="fs-5 fw-bold">Załączniki</p>
+        <div>
+            <RadzenDataGrid TItem="ActionFilesViewModel" Data="@actionFiles" Density="Density.Compact" PageSize="24">
+                <Columns>
+                    <RadzenDataGridColumn TItem="ActionFilesViewModel" Property="ID" Visible="false" />
+                    <RadzenDataGridColumn TItem="ActionFilesViewModel" Property="Extension" Frozen="true" Width="40px">
+                        <Template Context="actionFiles">
+                            <img src=@String.Format("images/file_extension/{0}.png", actionFiles.Extension) />
+                            <a href="@actionFiles.Link" target="_blank" class="ms-1">@actionFiles.FileName</a>
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public int ActionID { get; set; }
+
+    IEnumerable<ActionFilesViewModel> actionFiles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        actionFiles = await _httpClient.GetFromJsonAsync<IEnumerable<ActionFilesViewModel>>($"/api/ActionFiles/SelectByAction/{ActionID}?Status=A");
+    }
+}

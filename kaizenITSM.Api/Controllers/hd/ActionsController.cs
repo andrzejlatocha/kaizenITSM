@@ -27,7 +27,7 @@ namespace kaizenITSM.Api.Controllers.hd
         }
 
         // GET: api/Actions
-        [HttpGet]
+        [HttpGet("{TicketID}")]
         public async Task<ActionResult<IEnumerable<ActionsViewModel>>> SelectByTicket(int TicketID, string Status)
         {
             return await _context.ActionsViewModel.Where(w => w.TicketID == TicketID && (w.Status == Status || Status == "*")).ToListAsync();

@@ -73,6 +73,10 @@ html, body {
     height: 100vh !important;
 }
 
+.vh-80 {
+    height: 80vh !important;
+}
+
 .grid-empty-template {
     color: lightgrey;
     font-size: 24px;
@@ -80,18 +84,46 @@ html, body {
     margin: 2rem;
 }
 
+.action-type-0 {
+    background-color: #F7F7F7;
+}
+
+.action-type-text-0 {
+    color: #3A474D;
+}
+
 .action-type-1 {
     background-color: #D9FFEB;
 }
 
+.action-type-text-1 {
+    color: #1DC25F;
+}
+
 .action-type-2 {
-    background-color: #D9FFEB;
+    background-color: #FFF2D1;
+}
+
+.action-type-text-3 {
+    color: #FF9A00;
 }
 
 .action-type-3 {
-    background-color: #91E5FF;
+    background-color: #B2EDFF;
+}
+
+.action-type-text-3 {
+    color: #00B3EA;
 }
 
 .action-type-4 {
     background-color: #F3F1F9;
+}
+
+.action-type-text-4 {
+    color: #9D7FF9;
+}
+
+.action-body {
+    background-color: #FFFFFF;
 }

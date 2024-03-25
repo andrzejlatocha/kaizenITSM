@@ -1,5 +1,6 @@
 ﻿using kaizenITSM.Api.Data;
 using kaizenITSM.Domain.Entities.hd;
+using kaizenITSM.Domain.ViewModels.hd;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,9 +21,16 @@ namespace kaizenITSM.Api.Controllers.hd
 
         // GET: api/TicketFiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketFiles>>> Select()
+        public async Task<ActionResult<IEnumerable<TicketFiles>>> Select(string Status)
         {
-            return await _context.TicketFiles.ToListAsync();
+            return await _context.TicketFiles.Where(w => w.Status == Status || Status == "*").ToListAsync();
+        }
+
+        // GET: api/TicketFiles
+        [HttpGet("{TicketID}")]
+        public async Task<ActionResult<IEnumerable<TicketFilesViewModel>>> SelectByTicket(int TicketID, string Status)
+        {
+            return await _context.TicketFilesViewModel.Where(w => w.TicketID == TicketID && (w.Status == Status || Status == "*")).ToListAsync();
         }
 
         // GET: api/TicketFiles/5

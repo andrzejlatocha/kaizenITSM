@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace kaizenITSM.Domain.ViewModels.hd
 {
@@ -13,7 +10,6 @@ namespace kaizenITSM.Domain.ViewModels.hd
     {
         [Key]
         public int ID { get; set; }
-        public string? Number { get; set; }
         public int GroupID { get; set; }
         public int? UserID { get; set; }
         public string? User { get; set; }
@@ -28,11 +24,13 @@ namespace kaizenITSM.Domain.ViewModels.hd
         public string TicketSource { get; set; }
         public DateTime Date { get; set; }
         public string Topic { get; set; }
+        public DateTime? RequestedDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
         public string Status { get; set; }
         public string StatusDisclaimer { get; set; }
-        public int AssignmentUsersID { get; set; }
-        public string Attachment { get; set; }
-        public string? AssignmentUsers { get; set; }
+        public string? AssignmentUsersID { get; set; }
+        //public string Attachment { get; set; }
+        //public string? AssignmentUsers { get; set; }
         public DateTime? CloseDate { get; set; }
     }
 }
