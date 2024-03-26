@@ -1,4 +1,5 @@
-﻿using kaizenITSM.Domain.Entities;
+﻿using kaizenITSM.Domain.Dtos.hd;
+using kaizenITSM.Domain.Entities;
 using kaizenITSM.Domain.Entities.account;
 using kaizenITSM.Domain.Entities.cmdb;
 using kaizenITSM.Domain.Entities.hd;
@@ -47,6 +48,9 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<Files> Files { get; set; }
 
         public virtual DbSet<Objects> Objects { get; set; }
+
+        // Dtos
+        public virtual DbSet<ActionNoteDto> ActionNoteDto { get; set; }
 
         // Models
         public virtual DbSet<UserModel> UserModel { get; set; }

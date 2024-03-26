@@ -7,10 +7,10 @@ GO
 CREATE SCHEMA [hd]
 GO
 
-CREATE SCHEMA [identity]
+CREATE SCHEMA [ident]
 GO
 
-CREATE SCHEMA [dictionary]
+CREATE SCHEMA [dic]
 GO
 
 CREATE SCHEMA [faq]

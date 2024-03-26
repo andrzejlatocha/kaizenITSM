@@ -241,7 +241,7 @@ AS
 	 WHERE too.IsHardware = 1
 GO
 
-CREATE VIEW [identity].vUserRoles
+CREATE VIEW ident.vUserRoles
 AS
 	SELECT u.LoginName
 		 , u.FirstName
@@ -259,11 +259,11 @@ AS
 		 , r.Description AS RoleDescription
 		 , r.IsEditing AS RoleIsEditing
 		 , r.Blocked AS RoleBlocked
-	FROM [identity].Users AS u INNER JOIN [identity].UserRoles AS ur ON u.ID = ur.UserID
-							   INNER JOIN [identity].Roles AS r ON ur.RoleID = r.ID
-																   AND r.Status = 'A';
+	FROM ident.Users AS u INNER JOIN ident.UserRoles AS ur ON u.ID = ur.UserID
+						  INNER JOIN ident.Roles AS r ON ur.RoleID = r.ID
+													     AND r.Status = 'A';
 
-CREATE VIEW [identity].vUserGroups
+CREATE VIEW ident.vUserGroups
 AS
 	SELECT u.LoginName
 		 , u.FirstName
@@ -281,9 +281,9 @@ AS
 		 , g.Description AS RoleDescription
 		 , g.IsEditing AS RoleIsEditing
 		 , g.Blocked AS RoleBlocked
-	FROM [identity].Users AS u INNER JOIN [identity].UserGroups AS ug ON u.ID = ug.UserID
-							   INNER JOIN [identity].Groups AS g ON ug.GroupID = g.ID
-																   AND g.Status = 'A';
+	FROM ident.Users AS u INNER JOIN ident.UserGroups AS ug ON u.ID = ug.UserID
+						  INNER JOIN ident.Groups AS g ON ug.GroupID = g.ID
+														  AND g.Status = 'A';
 																   
 CREATE VIEW hd.vTicketList
 AS
@@ -303,7 +303,7 @@ AS
 		  , t.Topic
 		  , t.Status
 		  , tsv.Disclaimer
-	 FROM hd.Tickets AS t INNER JOIN [identity].Groups AS g ON t.GroupID = g.ID
+	 FROM hd.Tickets AS t INNER JOIN ident.Groups AS g ON t.GroupID = g.ID
 						  INNER JOIN hd.TypesOfTicket AS tot ON t.TypeOfTicketID = tot.ID
 						  INNER JOIN hd.PrioritiesOfTicket AS pot ON t.PriorityOfTicketID = pot.ID
 						  INNER JOIN hd.TicketsCategory AS tc ON t.TicketCategoryID = tc.ID

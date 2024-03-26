@@ -1,6 +1,8 @@
 ﻿using kaizenITSM.Api.Data;
+using kaizenITSM.Domain.Dtos.hd;
 using kaizenITSM.Domain.Entities.hd;
 using kaizenITSM.Domain.ViewModels.hd;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -84,6 +86,17 @@ namespace kaizenITSM.Api.Controllers.hd
         public async Task<ActionResult<Actions>> Insert(Actions actions)
         {
             _context.Actions.Add(actions);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = actions.ID }, actions);
+        }
+
+        // POST: api/Actions
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Actions>> InsertNote(ActionNoteDto actions)
+        {
+            _context.ActionNoteDto.Add(actions);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("Get", new { id = actions.ID }, actions);

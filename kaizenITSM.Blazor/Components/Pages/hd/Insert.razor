@@ -41,7 +41,7 @@ else
                             </RadzenAlert>
                         </div>
                     </div>
-                    <EditForm Model=@data OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+                    <EditForm Model=@data OnValidSubmit="OnSubmit" OnInvalidSubmit="OnInvalidSubmit">
                         <DataAnnotationsValidator />
                         <div class="row mt-1">
                             <div class="col-6">
@@ -244,7 +244,7 @@ else
         }
     }
 
-    private async void HandleValidSubmit(EditContext context)
+    private async void OnSubmit(EditContext context)
     {
         _logger.LogInformation("Ticket Create Submit");
 
@@ -293,7 +293,7 @@ else
         }
     }
 
-    private void HandleInvalidSubmit(EditContext context)
+    private void OnInvalidSubmit(EditContext context)
     {
         errorMessage = "Popraw wszystkie błędy";
         errorVisible = true;

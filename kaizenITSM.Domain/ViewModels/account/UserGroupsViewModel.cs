@@ -6,7 +6,7 @@ using System.Linq;
 namespace kaizenITSM.Domain.ViewModels.account
 {
     [Keyless]
-    [Table("vUserGroups", Schema = "identity")]
+    [Table("vUserGroups", Schema = "ident")]
     public class UserGroupsViewModel
     {
         public int ID { get; set; }

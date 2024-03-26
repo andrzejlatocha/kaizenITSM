@@ -1,17 +1,131 @@
 ﻿@rendermode RenderMode.InteractiveServer
 
+@using System.Text
+@using Newtonsoft.Json
+@using kaizenITSM.Domain.Dtos.hd
+
+@inject HttpClient _httpClient;
+@inject ILogger<ActionNoteDto> _logger
+@inject AuthenticationStateProvider _authenticationStateProvider
 @inject DialogService _dialogService
 
-<h3>Insert NOTE</h3>
-
-<RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
-              Icon="cancel" Text="Anuluj" Click="@OnClose" />
+<div class="row w-100">
+    <div class="col-12">
+        <RadzenTemplateForm Data="@data" InvalidSubmit="OnInvalidSubmit" Submit="@((ActionNoteDto args) => { OnSubmit(args); })" class="w-100">
+            <DataAnnotationsValidator />
+            <RadzenAlert Variant="Variant.Filled" AlertStyle="AlertStyle.Primary" Shade="Shade.Dark" AllowClose="false" Visible="@errorVisible" 
+                         Size="AlertSize.Small">
+                <RadzenLabel Text="@errorMessage">
+                </RadzenLabel>
+            </RadzenAlert>
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem">
+                <RadzenHtmlEditor @bind-Value=@actionInformation style="height: 250px;" UploadUrl="upload/image">
+                    <RadzenHtmlEditorUndo />
+                    <RadzenHtmlEditorRedo />
+                    <RadzenHtmlEditorFontName />
+                    <RadzenHtmlEditorFontSize />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorAlignLeft />
+                    <RadzenHtmlEditorAlignCenter />
+                    <RadzenHtmlEditorAlignRight />
+                    <RadzenHtmlEditorJustify />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorIndent />
+                    <RadzenHtmlEditorOutdent />
+                    <RadzenHtmlEditorUnorderedList />
+                    <RadzenHtmlEditorOrderedList />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorBold />
+                    <RadzenHtmlEditorItalic />
+                    <RadzenHtmlEditorUnderline />
+                    <RadzenHtmlEditorStrikeThrough />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorColor />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorSubscript />
+                    <RadzenHtmlEditorSuperscript />
+                    <RadzenHtmlEditorSeparator />
+                    <RadzenHtmlEditorLink />
+                    <RadzenHtmlEditorUnlink />
+                    <RadzenHtmlEditorImage />
+                </RadzenHtmlEditor>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+                <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Zapisz" />
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Large" Icon="cancel" Text="Anuluj" Click="@OnCancel" />
+            </RadzenStack>
+        </RadzenTemplateForm>
+    </div>
+</div>
 
 @code {
     [Parameter]
-    public int ID { get; set; }
+    public int TicketID { get; set; }
 
-    void OnClose()
+    private bool errorVisible = false;
+    private string? errorMessage = string.Empty;
+
+    private ActionNoteDto data;
+    private string actionInformation;
+
+    protected override async Task OnInitializedAsync()
+    {    
+        data = new ActionNoteDto(TicketID, 2);
+    }
+
+    async Task OnSubmit(ActionNoteDto arg)
+    {
+        _logger.LogInformation("Action Create Submit");
+
+        try
+        {
+            int userID = -1;
+
+            if (_authenticationStateProvider != null)
+            {
+                var authstate = Task.Run(async () => await _authenticationStateProvider.GetAuthenticationStateAsync()).Result;
+                if (authstate.User != null)
+                {
+                    userID = Convert.ToInt32(authstate.User.FindFirst("ID").Value);
+                    string accessToken = authstate.User.FindFirst("Token").Value;
+
+                    //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                }
+            }
+
+            data.UserID = userID;
+            data.Information = actionInformation;
+            data.Date = DateTime.Now;
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("Actions/InsertNote", content);
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                _dialogService.CloseSide(true);
+            }
+            else
+            {
+                errorMessage = response.RequestMessage.ToString();
+                errorVisible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            errorVisible = true;
+        }
+    }
+
+    void OnInvalidSubmit()
+    {
+        errorMessage = "Popraw wszystkie błędy";
+        errorVisible = true;
+    }
+
+    void OnCancel()
     {
         _dialogService.CloseSide(false);
     }

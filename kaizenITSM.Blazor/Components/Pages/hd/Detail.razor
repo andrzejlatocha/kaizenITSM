@@ -157,7 +157,7 @@
                 }
                 else
                 {
-                    <div class="card w-100 vh-80">
+                    <div class="card w-100">
                         <div class="card-body">
                             <div class="row mt-4">
                                 <div class="col-4">
@@ -180,17 +180,6 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <RadzenFormField Text="Grupa" Class="w-100">
-                                        <RadzenDropDown @bind-Value="data.GroupID" AllowClear="true" Name="group" Class="w-100"
-                                                        Data="@groups" TextProperty="Description" ValueProperty="ID" AllowVirtualization="true"
-                                                        AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                                        FilterOperator="StringFilterOperator.Contains" Change="@(args => { OnGroupsChange(data.GroupID); })">
-                                        </RadzenDropDown>
-                                    </RadzenFormField>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-12">
                                     <RadzenFormField Text="Typ zgłoszenia" Class="w-100">
                                         <RadzenDropDown @bind-Value="data.TypeOfTicketID" AllowClear="true" Name="typeOfTicketID" Class="w-100"
                                                         Data="@typesOfTicket" TextProperty="Description" ValueProperty="ID"
@@ -207,6 +196,17 @@
                                                         Data="@ticketsCategory" TextProperty="Name" ValueProperty="ID" AllowVirtualization="true"
                                                         AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                                         FilterOperator="StringFilterOperator.Contains">
+                                        </RadzenDropDown>
+                                    </RadzenFormField>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <RadzenFormField Text="Grupa" Class="w-100">
+                                        <RadzenDropDown @bind-Value="data.GroupID" AllowClear="true" Name="group" Class="w-100"
+                                                        Data="@groups" TextProperty="Description" ValueProperty="ID" AllowVirtualization="true"
+                                                        AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                        FilterOperator="StringFilterOperator.Contains" Change="@(args => { OnGroupsChange(data.GroupID); })">
                                         </RadzenDropDown>
                                     </RadzenFormField>
                                 </div>
@@ -256,7 +256,7 @@
                                             <RadzenDataGridColumn TItem="TicketFilesViewModel" Property="Extension" Frozen="true" Width="40px">
                                                 <Template Context="ticketFiles">
                                                     <img src=@String.Format("images/file_extension/{0}.png", ticketFiles.Extension) />
-                                                    <a href="@ticketFiles.Link" target="_blank" class="ms-1">@ticketFiles.FileName</a>
+                                                    <a href="javascript: void(0)" @onclick="(() => ShowImage(ticketFiles.Link))" onmouseover="" class="ms-1">@ticketFiles.FileName</a>
                                                 </Template>
                                             </RadzenDataGridColumn>
                                         </Columns>
@@ -266,6 +266,32 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     Czas pracy
+                                </div>
+                            </div>
+                            <div class="row mt-0">
+                                <div class="col-12">
+                                    <TicketTime TicketID="ID" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row mt-2">
+                                <div class="col-12 fw-bold">
+                                    SZCZEGÓŁY ZLECENIODAWACY
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    -
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    <RadzenSelectBar TValue="int" Size="ButtonSize.Large" class="w-100 text-center">
+                                       <Items>
+                                            <RadzenSelectBarItem Value="1" Text="Zasoby w posiadaniu" />
+                                            <RadzenSelectBarItem Value="2" Text="Poprzednie zgłoszenia" />
+                                       </Items>
+                                   </RadzenSelectBar>
                                 </div>
                             </div>
                         </div>
@@ -371,11 +397,11 @@
         bool result = true;
 
         result = await _dialogService.OpenSideAsync<note.Insert>("Nowa notatka"
-                    , new Dictionary<string, object> { { "ID", ID } }
+                    , new Dictionary<string, object> { { "TicketID", ID } }
                     , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
-                                                       Position = DialogPosition.Right, 
+                                                       Position = DialogPosition.Top, 
                                                        ShowMask = true, 
-                                                       Width = "470px", 
+                                                       Height = "470px", 
                                                        ShowClose = false });
 
         return result;
@@ -386,14 +412,27 @@
         bool result = true;
 
         result = await _dialogService.OpenSideAsync<task.Insert>("Nowe zadanie"
-                    , new Dictionary<string, object> { { "ID", ID } }
+                    , new Dictionary<string, object> { { "TicketID", ID } }
                     , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
-                                                       Position = DialogPosition.Right, 
+                            Position = DialogPosition.Top,
                                                        ShowMask = true, 
-                                                       Width = "470px", 
+                                                       Width = "670px", 
                                                        ShowClose = false });
 
         return result;
+    }
+
+    async Task ShowImage(string link)
+    {
+        await _dialogService.OpenAsync<ImageViewer>("Podgląd"
+                            , new Dictionary<string, object> { { "link", link } }
+                            , options: new DialogOptions
+                                {
+                                    CloseDialogOnOverlayClick = false,
+                                    Width = "1000px",
+                                    Height = "800px",
+                                    ShowClose = true
+                                });
     }
 
     void OnReturn()

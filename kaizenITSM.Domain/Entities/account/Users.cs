@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace kaizenITSM.Domain.Entities.account
 {
-    [Table("Users", Schema = "identity")]
+    [Table("Users", Schema = "ident")]
     public class Users
     {
         [Key]

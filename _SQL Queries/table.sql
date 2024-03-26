@@ -1,4 +1,4 @@
-CREATE TABLE [identity].[Users](
+CREATE TABLE ident.[Users](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[LoginName] [varchar](100) NULL,
 	[FirstName] [varchar](100) NULL,
@@ -19,22 +19,22 @@ CREATE TABLE [identity].[Users](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[Users] ADD  CONSTRAINT [DF_Users_IsNew]  DEFAULT ((1)) FOR [IsNew]
+ALTER TABLE ident.[Users] ADD  CONSTRAINT [DF_Users_IsNew]  DEFAULT ((1)) FOR [IsNew]
 GO
 
-ALTER TABLE [identity].[Users] ADD  CONSTRAINT [DF_Users_Blocked]  DEFAULT ((0)) FOR [Blocked]
+ALTER TABLE ident.[Users] ADD  CONSTRAINT [DF_Users_Blocked]  DEFAULT ((0)) FOR [Blocked]
 GO
 
-ALTER TABLE [identity].[Users] ADD  CONSTRAINT [DF_Users_IsEditing]  DEFAULT ((1)) FOR [IsEditing]
+ALTER TABLE ident.[Users] ADD  CONSTRAINT [DF_Users_IsEditing]  DEFAULT ((1)) FOR [IsEditing]
 GO
 
-ALTER TABLE [identity].[Users] ADD  CONSTRAINT [DF_Users_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[Users] ADD  CONSTRAINT [DF_Users_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[Users] ADD  CONSTRAINT [DF_Users_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[Users] ADD  CONSTRAINT [DF_Users_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-CREATE TABLE [identity].[Groups](
+CREATE TABLE ident.[Groups](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](100) NULL,
 	[Description] [varchar](1000) NULL,
@@ -49,19 +49,19 @@ CREATE TABLE [identity].[Groups](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[Groups] ADD  CONSTRAINT [DF_Groups_IsEditing]  DEFAULT ((1)) FOR [IsEditing]
+ALTER TABLE ident.[Groups] ADD  CONSTRAINT [DF_Groups_IsEditing]  DEFAULT ((1)) FOR [IsEditing]
 GO
 
-ALTER TABLE [identity].[Groups] ADD  CONSTRAINT [DF_Groups_Blocked]  DEFAULT ((0)) FOR [Blocked]
+ALTER TABLE ident.[Groups] ADD  CONSTRAINT [DF_Groups_Blocked]  DEFAULT ((0)) FOR [Blocked]
 GO
 
-ALTER TABLE [identity].[Groups] ADD  CONSTRAINT [DF_Groups_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[Groups] ADD  CONSTRAINT [DF_Groups_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[Groups] ADD  CONSTRAINT [DF_Groups_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[Groups] ADD  CONSTRAINT [DF_Groups_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-CREATE TABLE [identity].[Roles](
+CREATE TABLE ident.[Roles](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](100) NULL,
 	[Description] [varchar](1000) NULL,
@@ -76,20 +76,20 @@ CREATE TABLE [identity].[Roles](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[Roles] ADD  CONSTRAINT [DF_Roles_IsEditing]  DEFAULT ((0)) FOR [IsEditing]
+ALTER TABLE ident.[Roles] ADD  CONSTRAINT [DF_Roles_IsEditing]  DEFAULT ((0)) FOR [IsEditing]
 GO
 
-ALTER TABLE [identity].[Roles] ADD  CONSTRAINT [DF_Roles_Blocked]  DEFAULT ((0)) FOR [Blocked]
+ALTER TABLE ident.[Roles] ADD  CONSTRAINT [DF_Roles_Blocked]  DEFAULT ((0)) FOR [Blocked]
 GO
 
-ALTER TABLE [identity].[Roles] ADD  CONSTRAINT [DF_Roles_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[Roles] ADD  CONSTRAINT [DF_Roles_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[Roles] ADD  CONSTRAINT [DF_Roles_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[Roles] ADD  CONSTRAINT [DF_Roles_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
 
-CREATE TABLE [identity].[UserGroups](
+CREATE TABLE ident.[UserGroups](
 	[ID] [int] NOT NULL,
 	[UserID] [int] NULL,
 	[GroupID] [int] NULL,
@@ -102,27 +102,27 @@ CREATE TABLE [identity].[UserGroups](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[UserGroups] ADD  CONSTRAINT [DF_UserGroups_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[UserGroups] ADD  CONSTRAINT [DF_UserGroups_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[UserGroups] ADD  CONSTRAINT [DF_UserGroups_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[UserGroups] ADD  CONSTRAINT [DF_UserGroups_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-ALTER TABLE [identity].[UserGroups]  WITH CHECK ADD  CONSTRAINT [FK_UserGroups_Groups] FOREIGN KEY([GroupID])
-REFERENCES [identity].[Groups] ([ID])
+ALTER TABLE ident.[UserGroups]  WITH CHECK ADD  CONSTRAINT [FK_UserGroups_Groups] FOREIGN KEY([GroupID])
+REFERENCES ident.[Groups] ([ID])
 GO
 
-ALTER TABLE [identity].[UserGroups] CHECK CONSTRAINT [FK_UserGroups_Groups]
+ALTER TABLE ident.[UserGroups] CHECK CONSTRAINT [FK_UserGroups_Groups]
 GO
 
-ALTER TABLE [identity].[UserGroups]  WITH CHECK ADD  CONSTRAINT [FK_UserGroups_Users] FOREIGN KEY([UserID])
-REFERENCES [identity].[Users] ([ID])
+ALTER TABLE ident.[UserGroups]  WITH CHECK ADD  CONSTRAINT [FK_UserGroups_Users] FOREIGN KEY([UserID])
+REFERENCES ident.[Users] ([ID])
 GO
 
-ALTER TABLE [identity].[UserGroups] CHECK CONSTRAINT [FK_UserGroups_Users]
+ALTER TABLE ident.[UserGroups] CHECK CONSTRAINT [FK_UserGroups_Users]
 GO
 
-CREATE TABLE [identity].[UserLogins](
+CREATE TABLE ident.[UserLogins](
 	[ID] [bigint] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[LoginName] [varchar](50) NOT NULL,
 	[Date] [datetime] NULL,
@@ -135,17 +135,17 @@ CREATE TABLE [identity].[UserLogins](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[UserLogins] ADD  CONSTRAINT [DF_UserLogins_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[UserLogins] ADD  CONSTRAINT [DF_UserLogins_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-ALTER TABLE [identity].[UserLogins]  WITH CHECK ADD  CONSTRAINT [FK_UserLogins_UserLogins] FOREIGN KEY([ID])
-REFERENCES [identity].[UserLogins] ([ID])
+ALTER TABLE ident.[UserLogins]  WITH CHECK ADD  CONSTRAINT [FK_UserLogins_UserLogins] FOREIGN KEY([ID])
+REFERENCES ident.[UserLogins] ([ID])
 GO
 
-ALTER TABLE [identity].[UserLogins] CHECK CONSTRAINT [FK_UserLogins_UserLogins]
+ALTER TABLE ident.[UserLogins] CHECK CONSTRAINT [FK_UserLogins_UserLogins]
 GO
 
-CREATE TABLE [identity].[UserRoles](
+CREATE TABLE ident.[UserRoles](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[UserID] [int] NULL,
 	[RoleID] [int] NULL,
@@ -158,27 +158,27 @@ CREATE TABLE [identity].[UserRoles](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[UserRoles] ADD  CONSTRAINT [DF_UserRoles_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[UserRoles] ADD  CONSTRAINT [DF_UserRoles_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[UserRoles] ADD  CONSTRAINT [DF_UserRoles_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[UserRoles] ADD  CONSTRAINT [DF_UserRoles_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-ALTER TABLE [identity].[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Roles] FOREIGN KEY([RoleID])
-REFERENCES [identity].[Roles] ([ID])
+ALTER TABLE ident.[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Roles] FOREIGN KEY([RoleID])
+REFERENCES ident.[Roles] ([ID])
 GO
 
-ALTER TABLE [identity].[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Roles]
+ALTER TABLE ident.[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Roles]
 GO
 
-ALTER TABLE [identity].[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Users] FOREIGN KEY([UserID])
-REFERENCES [identity].[Users] ([ID])
+ALTER TABLE ident.[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Users] FOREIGN KEY([UserID])
+REFERENCES ident.[Users] ([ID])
 GO
 
-ALTER TABLE [identity].[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Users]
+ALTER TABLE ident.[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Users]
 GO
 
-CREATE TABLE [identity].[GroupRoles](
+CREATE TABLE ident.[GroupRoles](
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[GroupID] [int] NULL,
 	[RoleID] [int] NULL,
@@ -191,24 +191,24 @@ CREATE TABLE [identity].[GroupRoles](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [identity].[GroupRoles] ADD  CONSTRAINT [DF_GroupRoles_Status]  DEFAULT ('A') FOR [Status]
+ALTER TABLE ident.[GroupRoles] ADD  CONSTRAINT [DF_GroupRoles_Status]  DEFAULT ('A') FOR [Status]
 GO
 
-ALTER TABLE [identity].[GroupRoles] ADD  CONSTRAINT [DF_GroupRoles_rowguid]  DEFAULT (newid()) FOR [rowguid]
+ALTER TABLE ident.[GroupRoles] ADD  CONSTRAINT [DF_GroupRoles_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
-ALTER TABLE [identity].[GroupRoles]  WITH CHECK ADD  CONSTRAINT [FK_GroupRoles_Roles] FOREIGN KEY([RoleID])
-REFERENCES [identity].[Roles] ([ID])
+ALTER TABLE ident.[GroupRoles]  WITH CHECK ADD  CONSTRAINT [FK_GroupRoles_Roles] FOREIGN KEY([RoleID])
+REFERENCES ident.[Roles] ([ID])
 GO
 
-ALTER TABLE [identity].[GroupRoles] CHECK CONSTRAINT [FK_GroupRoles_Roles]
+ALTER TABLE ident.[GroupRoles] CHECK CONSTRAINT [FK_GroupRoles_Roles]
 GO
 
-ALTER TABLE [identity].[GroupRoles]  WITH CHECK ADD  CONSTRAINT [FK_GroupRoles_Groups] FOREIGN KEY([GroupID])
-REFERENCES [identity].[Groups] ([ID])
+ALTER TABLE ident.[GroupRoles]  WITH CHECK ADD  CONSTRAINT [FK_GroupRoles_Groups] FOREIGN KEY([GroupID])
+REFERENCES ident.[Groups] ([ID])
 GO
 
-ALTER TABLE [identity].[GroupRoles] CHECK CONSTRAINT [FK_GroupRoles_Groups]
+ALTER TABLE ident.[GroupRoles] CHECK CONSTRAINT [FK_GroupRoles_Groups]
 GO
 
 CREATE TABLE [dbo].[Files](
@@ -239,6 +239,65 @@ ALTER TABLE [dbo].[Files] ADD  CONSTRAINT [DF_Files_Status]  DEFAULT ('A') FOR [
 GO
 
 ALTER TABLE [dbo].[Files] ADD  CONSTRAINT [DF_Files_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [dbo].[Notes](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Description] [varchar](max) NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Notes] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Notes] ADD  CONSTRAINT [DF_Notes_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [dbo].[Notes] ADD  CONSTRAINT [DF_Notes_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [dbo].[Notes] ADD  CONSTRAINT [DF_Notes_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+CREATE TABLE [dbo].[Tasks](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[Topic] [varchar](500) NULL,
+	[Description] [varchar](max) NULL,
+	[StartDate] [datetime] NULL,
+	[FinishDate] [datetime] NULL,
+	[GroupID] [int] NULL,
+	[OwnerUserID] [int] NULL,
+	[PrioritiesID] [int] NULL,
+	[TaskTypeID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [datetime] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL,
+ CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Tasks] ADD  CONSTRAINT [DF_Tasks_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [dbo].[Tasks] ADD  CONSTRAINT [DF_Tasks_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [dbo].[Tasks] ADD  CONSTRAINT [DF_Tasks_rowguid]  DEFAULT (newid()) FOR [rowguid]
 GO
 
 CREATE TABLE [cmdb].[ObjectStates](
@@ -781,7 +840,7 @@ ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_Tickets]
 GO
 
 ALTER TABLE [hd].[Actions]  WITH CHECK ADD  CONSTRAINT [FK_Actions_Users] FOREIGN KEY([UserID])
-REFERENCES [identity].[Users] ([ID])
+REFERENCES ident.[Users] ([ID])
 GO
 
 ALTER TABLE [hd].[Actions] CHECK CONSTRAINT [FK_Actions_Users]
@@ -947,5 +1006,147 @@ REFERENCES [hd].[TypesOfTicket] ([ID])
 GO
 
 ALTER TABLE [hd].[Tickets] CHECK CONSTRAINT [FK_Tickets_TypesOfTicket]
+GO
+
+CREATE TABLE [hd].[TicketNotes](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[TicketID] [int] NULL,
+	[NoteID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [int] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketNotes] ADD  CONSTRAINT [DF_TicketNotes_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketNotes] ADD  CONSTRAINT [DF_TicketNotes_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[TicketNotes]  WITH CHECK ADD  CONSTRAINT [FK_TicketNotes_Notes] FOREIGN KEY([NoteID])
+REFERENCES [dbo].[Notes] ([ID])
+GO
+
+ALTER TABLE [hd].[TicketNotes] CHECK CONSTRAINT [FK_TicketNotes_Notes]
+GO
+
+ALTER TABLE [hd].[TicketNotes]  WITH CHECK ADD  CONSTRAINT [FK_TicketNotes_Tickets] FOREIGN KEY([TicketID])
+REFERENCES [hd].[Tickets] ([ID])
+GO
+
+ALTER TABLE [hd].[TicketNotes] CHECK CONSTRAINT [FK_TicketNotes_Tickets]
+GO
+
+CREATE TABLE [hd].[TicketTasks](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[TicketID] [int] NULL,
+	[TaskID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [int] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[TicketTasks] ADD  CONSTRAINT [DF_TicketTasks_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[TicketTasks] ADD  CONSTRAINT [DF_TicketTasks_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[TicketTasks]  WITH CHECK ADD  CONSTRAINT [FK_TicketTasks_Tasks] FOREIGN KEY([TaskID])
+REFERENCES [dbo].[Tasks] ([ID])
+GO
+
+ALTER TABLE [hd].[TicketTasks] CHECK CONSTRAINT [FK_TicketTasks_Tasks]
+GO
+
+ALTER TABLE [hd].[TicketTasks]  WITH CHECK ADD  CONSTRAINT [FK_TicketTasks_Tickets] FOREIGN KEY([TicketID])
+REFERENCES [hd].[Tickets] ([ID])
+GO
+
+ALTER TABLE [hd].[TicketTasks] CHECK CONSTRAINT [FK_TicketTasks_Tickets]
+GO
+
+CREATE TABLE [hd].[ActionNotes](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ActionID] [int] NULL,
+	[NoteID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [int] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[ActionNotes] ADD  CONSTRAINT [DF_ActionNotes_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[ActionNotes] ADD  CONSTRAINT [DF_ActionNotes_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[ActionNotes] ADD  CONSTRAINT [DF_ActionNotes_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[ActionNotes]  WITH CHECK ADD  CONSTRAINT [FK_ActionNotes_Actions] FOREIGN KEY([ActionID])
+REFERENCES [hd].[Actions] ([ID])
+GO
+
+ALTER TABLE [hd].[ActionNotes] CHECK CONSTRAINT [FK_ActionNotes_Actions]
+GO
+
+ALTER TABLE [hd].[ActionNotes]  WITH CHECK ADD  CONSTRAINT [FK_ActionNotes_Notes] FOREIGN KEY([NoteID])
+REFERENCES [dbo].[Notes] ([ID])
+GO
+
+ALTER TABLE [hd].[ActionNotes] CHECK CONSTRAINT [FK_ActionNotes_Notes]
+GO
+
+CREATE TABLE [hd].[ActionTasks](
+	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[ActionID] [int] NULL,
+	[TaskID] [int] NULL,
+	[Status] [char](1) NULL,
+	[CreationDate] [datetime] NULL,
+	[CreationUserID] [int] NULL,
+	[ModifyingDate] [int] NULL,
+	[ModifyingUserID] [int] NULL,
+	[Deleted] [bit] NULL,
+	[rowguid] [uniqueidentifier] ROWGUIDCOL  NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [hd].[ActionTasks] ADD  CONSTRAINT [DF_ActionTasks_Status]  DEFAULT ('A') FOR [Status]
+GO
+
+ALTER TABLE [hd].[ActionTasks] ADD  CONSTRAINT [DF_ActionTasks_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [hd].[ActionTasks] ADD  CONSTRAINT [DF_ActionTasks_rowguid]  DEFAULT (newid()) FOR [rowguid]
+GO
+
+ALTER TABLE [hd].[ActionTasks]  WITH CHECK ADD  CONSTRAINT [FK_ActionTasks_Actions] FOREIGN KEY([ActionID])
+REFERENCES [hd].[Actions] ([ID])
+GO
+
+ALTER TABLE [hd].[ActionTasks] CHECK CONSTRAINT [FK_ActionTasks_Actions]
+GO
+
+ALTER TABLE [hd].[ActionTasks]  WITH CHECK ADD  CONSTRAINT [FK_ActionTasks_Tasks] FOREIGN KEY([TaskID])
+REFERENCES [dbo].[Tasks] ([ID])
+GO
+
+ALTER TABLE [hd].[ActionTasks] CHECK CONSTRAINT [FK_ActionTasks_Tasks]
 GO
 
