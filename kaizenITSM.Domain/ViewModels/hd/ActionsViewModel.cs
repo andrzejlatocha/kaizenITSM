@@ -14,12 +14,12 @@ namespace kaizenITSM.Domain.ViewModels.hd
         public int ActionTypeID { get; set; }
         public string ActionType { get; set; }
         public string Icon { get; set; }
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public string Information { get; set; }
         public DateTime Date { get; set; }
-        public string DateDecription { get; set; }
-        public string DateGroup { get; set; }
+        public string? DateDecription { get; set; }
+        public string? DateGroup { get; set; }
         public string Status { get; set; }
-        public string Attachment { get; set; }
+        public string? Attachment { get; set; }
     }
 }

@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace kaizenITSM.Domain.Entities.hd
 {
-    [Table("PrioritiesOfTicket", Schema = "hd")]
-    public class PrioritiesOfTicket
+    [Table("Priorities", Schema = "hd")]
+    public class Priorities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

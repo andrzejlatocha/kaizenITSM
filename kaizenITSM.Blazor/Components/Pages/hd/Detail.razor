@@ -58,7 +58,7 @@
                             <div class="float-left">
                                 <p class="fs-2 fw-bold m-0">@data.Topic</p>
                                 <div class="d-inline-block text-mutted fs-6">
-                                    Priorytet: @data.PriorityOfTicket
+                                    Priorytet: @data.Priority
                                 </div>
                                 <div class="d-inline-block text-mutted fs-6 ms-4">
                                     Zgłaszający: @data.User
@@ -121,10 +121,17 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="card-footer text-body-secondary">
-                                                                    <a href="#"><img src="images\button\reply-24.png" class="ms-1" /></a>
-                                                                    <a href="#"><img src="images\button\reply-all-24.png" class="ms-1" /></a>
-                                                                    <a href="#"><img src="images\button\forward-24.png" class="ms-1" /></a>
-                                                                    <a href="#"><img src="images\button\resend-24.png" class="ms-1" /></a>
+                                                                    @if (action.ActionTypeID == 5)
+                                                                    {
+                                                                        <a href="#"><img src="images\button\reply-24.png" class="ms-1" /></a>
+                                                                        <a href="#"><img src="images\button\reply-all-24.png" class="ms-1" /></a>
+                                                                        <a href="#"><img src="images\button\forward-24.png" class="ms-1" /></a>
+                                                                        <a href="#"><img src="images\button\resend-24.png" class="ms-1" /></a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="#"><img src="images\button\edit-24.png" class="ms-1" /></a>
+                                                                    }
                                                                     <a href="#"><img src="images\button\delete-24.png" class="ms-1" /></a>
                                                                 </div>
                                                             </div>
@@ -310,7 +317,7 @@
     private IEnumerable<ActionsViewModel> actions;
 
     private IEnumerable<TypesOfTicket> typesOfTicket;
-    private IEnumerable<PrioritiesOfTicket> prioritiesOfTicket;
+    private IEnumerable<Priorities> priorities;
     private IEnumerable<TicketStatusValues> ticketStatusValues;
     private IEnumerable<TicketsCategory> ticketsCategory;
     private IEnumerable<TicketsSource> ticketsSource;
@@ -336,7 +343,7 @@
     protected override async Task OnInitializedAsync()
     {
         typesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<TypesOfTicket>>($"TypesOfTickets/Select?Status=A");
-        prioritiesOfTicket = await _httpClient.GetFromJsonAsync<IEnumerable<PrioritiesOfTicket>>($"PrioritiesOfTickets/Select?Status=A");
+        priorities = await _httpClient.GetFromJsonAsync<IEnumerable<Priorities>>($"Priorities/Select?Status=A");
         ticketStatusValues = await _httpClient.GetFromJsonAsync<IEnumerable<TicketStatusValues>>($"TicketStatusValues/Select?Status=A");
         ticketsCategory = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsCategory>>($"TicketsCategories/Select?Status=A");
         ticketsSource = await _httpClient.GetFromJsonAsync<IEnumerable<TicketsSource>>($"TicketsSources/Select?Status=A");
@@ -388,36 +395,48 @@
 
         if (answer)
         {
-
+            data = await _httpClient.GetFromJsonAsync<TicketDetailsViewModel>($"/api/Tickets/Detail/{ID}");
         }
     }
 
     async Task<bool> OnInsertNote()
     {
-        bool result = true;
-
-        result = await _dialogService.OpenSideAsync<note.Insert>("Nowa notatka"
-                    , new Dictionary<string, object> { { "TicketID", ID } }
-                    , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
-                                                       Position = DialogPosition.Top, 
-                                                       ShowMask = true, 
-                                                       Height = "470px", 
-                                                       ShowClose = false });
+        bool result = await _dialogService.OpenSideAsync<note.Insert>("Nowa notatka"
+                        , new Dictionary<string, object> { { "TicketID", ID } }
+                        , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
+                                                           Position = DialogPosition.Top, 
+                                                           ShowMask = true, 
+                                                           Height = "470px", 
+                                                           ShowClose = false });
 
         return result;
     }
 
     async Task<bool> OnInsertTask()
     {
-        bool result = true;
+        bool result = await _dialogService.OpenSideAsync<task.Insert>("Nowe zadanie"
+                        , new Dictionary<string, object> { { "TicketID", ID } }
+                        , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
+                                                           Position = DialogPosition.Top,
+                                                           ShowMask = true, 
+                                Height = "670px",
+                                                           ShowClose = false });
 
-        result = await _dialogService.OpenSideAsync<task.Insert>("Nowe zadanie"
-                    , new Dictionary<string, object> { { "TicketID", ID } }
-                    , options: new SideDialogOptions { CloseDialogOnOverlayClick = false, 
-                            Position = DialogPosition.Top,
-                                                       ShowMask = true, 
-                                                       Width = "670px", 
-                                                       ShowClose = false });
+        return result;
+    }
+
+    async Task<bool> OnInsertMessage()
+    {
+        bool result = await _dialogService.OpenSideAsync<message.Insert>("Nowa wiadomość"
+                        , new Dictionary<string, object> { { "TicketID", ID } }
+                        , options: new SideDialogOptions
+                            {
+                                CloseDialogOnOverlayClick = false,
+                                Position = DialogPosition.Top,
+                                ShowMask = true,
+                                Width = "670px",
+                                ShowClose = false
+                            });
 
         return result;
     }

@@ -15,12 +15,13 @@ namespace kaizenITSM.Domain.Entities.hd
         public int TicketID { get; set; }
         public int UserID { get; set; }
         public int ActionTypeID { get; set; }
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public string Information { get; set; }
         public DateTime Date { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FinishDate { get; set; }
-        public int GroupID { get; set; }
-        public int PropertiesID { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? FinishDate { get; set; }
+        public int? GroupID { get; set; }
+        public int? OwnerUserID { get; set; }
+        public int? PriorityID { get; set; }
     }
 }

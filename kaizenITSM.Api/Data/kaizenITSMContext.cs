@@ -36,7 +36,7 @@ namespace kaizenITSM.Api.Data
         public virtual DbSet<ActionFiles> ActionFiles { get; set; }
         public virtual DbSet<Actions> Actions { get; set; }
         public virtual DbSet<ActionUsers> ActionUsers { get; set; }
-        public virtual DbSet<PrioritiesOfTicket> PrioritiesOfTicket { get; set; }
+        public virtual DbSet<Priorities> Priorities { get; set; }
         public virtual DbSet<TicketAssignmentUsers> TicketAssignmentUsers { get; set; }
         public virtual DbSet<TicketFiles> TicketFiles { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }

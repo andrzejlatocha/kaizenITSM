@@ -12,7 +12,7 @@ namespace kaizenITSM.Domain.Entities.hd
         public Tickets()
         {
             this.Date = DateTime.Now;
-            this.PriorityOfTicketID = 4;
+            this.PriorityID = 4;
             this.Status = "A";
         }
 
@@ -22,7 +22,7 @@ namespace kaizenITSM.Domain.Entities.hd
         public string? Number { get; set; }
         public int GroupID { get; set; }
         public int TypeOfTicketID { get; set; }
-        public int PriorityOfTicketID { get; set; }
+        public int PriorityID { get; set; }
         public int TicketCategoryID { get; set; }
         public int TicketSourceID { get; set; }
         public DateTime Date { get; set; }

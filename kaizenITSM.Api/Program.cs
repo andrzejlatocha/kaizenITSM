@@ -1,3 +1,4 @@
+using AutoMapper;
 using kaizenITSM.Api.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,8 @@ services.AddSwaggerGen(options =>
         }
     });
 });
+
+services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

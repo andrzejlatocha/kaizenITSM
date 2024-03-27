@@ -16,8 +16,8 @@ namespace kaizenITSM.Domain.ViewModels.hd
         public string? User { get; set; }
         public int TypeOfTicketID { get; set; }
         public string TypeOfTicket { get; set; }
-        public int PriorityOfTicketID { get; set; }
-        public string PriorityOfTicket { get; set; }
+        public int PriorityID { get; set; }
+        public string Priority { get; set; }
         public int TicketCategoryID { get; set; }
         public string TicketCategory { get; set; }
         public string Icon { get; set; }

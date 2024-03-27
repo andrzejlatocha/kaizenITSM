@@ -1,0 +1,29 @@
+﻿@rendermode RenderMode.InteractiveServer
+
+@using System.Text
+@using Newtonsoft.Json
+@using kaizenITSM.Domain.Dtos.hd
+
+@inject HttpClient _httpClient;
+@inject ILogger<ActionMessageDto> _logger
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject DialogService _dialogService
+
+<RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+              Icon="cancel" Text="Anuluj" Click="@OnCancel" />
+
+@code {
+    [Parameter]
+    public int TicketID { get; set; }
+
+    private bool errorVisible = false;
+    private string? errorMessage = string.Empty;
+
+    private ActionMessageDto data;
+    private string actionInformation;
+
+    void OnCancel()
+    {
+        _dialogService.CloseSide(false);
+    }
+}

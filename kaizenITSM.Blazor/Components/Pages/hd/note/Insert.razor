@@ -1,4 +1,6 @@
-﻿@rendermode RenderMode.InteractiveServer
+﻿@page "/hd/note/insert/{TicketID:int}"
+
+@rendermode RenderMode.InteractiveServer
 
 @using System.Text
 @using Newtonsoft.Json
@@ -70,45 +72,54 @@
 
     protected override async Task OnInitializedAsync()
     {    
-        data = new ActionNoteDto(TicketID, 2);
+        data = new ActionNoteDto(TicketID);
     }
 
     async Task OnSubmit(ActionNoteDto arg)
     {
-        _logger.LogInformation("Action Create Submit");
+        _logger.LogInformation("ActionNote Create Submit");
 
         try
         {
-            int userID = -1;
-
-            if (_authenticationStateProvider != null)
+            if (actionInformation != null)
             {
-                var authstate = Task.Run(async () => await _authenticationStateProvider.GetAuthenticationStateAsync()).Result;
-                if (authstate.User != null)
+                int userID = -1;
+
+                if (_authenticationStateProvider != null)
                 {
-                    userID = Convert.ToInt32(authstate.User.FindFirst("ID").Value);
-                    string accessToken = authstate.User.FindFirst("Token").Value;
+                    var authstate = Task.Run(async () => await _authenticationStateProvider.GetAuthenticationStateAsync()).Result;
+                    if (authstate.User != null)
+                    {
+                        userID = Convert.ToInt32(authstate.User.FindFirst("ID").Value);
+                        string accessToken = authstate.User.FindFirst("Token").Value;
 
-                    //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                        //_httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                    }
                 }
-            }
 
-            data.UserID = userID;
-            data.Information = actionInformation;
-            data.Date = DateTime.Now;
+                data.UserID = userID;
+                data.Information = actionInformation;
+                data.Date = DateTime.Now;
+                data.Status = "A";
 
-            StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("Actions/InsertNote", content);
-            string apiResponse = await response.Content.ReadAsStringAsync();
+                var response = await _httpClient.PostAsync("Actions/InsertNote", content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                _dialogService.CloseSide(true);
+                if (response.IsSuccessStatusCode)
+                {
+                    _dialogService.CloseSide(true);
+                }
+                else
+                {
+                    errorMessage = response.RequestMessage.ToString();
+                    errorVisible = true;
+                }
             }
             else
             {
-                errorMessage = response.RequestMessage.ToString();
+                errorMessage = "Notatka nie może być pusta";
                 errorVisible = true;
             }
         }

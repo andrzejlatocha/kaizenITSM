@@ -1,8 +1,8 @@
-﻿using kaizenITSM.Api.Data;
+﻿using AutoMapper;
+using kaizenITSM.Api.Data;
 using kaizenITSM.Domain.Dtos.hd;
 using kaizenITSM.Domain.Entities.hd;
 using kaizenITSM.Domain.ViewModels.hd;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,10 +15,12 @@ namespace kaizenITSM.Api.Controllers.hd
     public class ActionsController : ControllerBase
     {
         private readonly kaizenITSMContext _context;
+        private readonly IMapper _mapper;
 
-        public ActionsController(kaizenITSMContext context)
+        public ActionsController(kaizenITSMContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Actions
@@ -94,9 +96,31 @@ namespace kaizenITSM.Api.Controllers.hd
         // POST: api/Actions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Actions>> InsertNote(ActionNoteDto actions)
+        public async Task<ActionResult<Action>> InsertNote(ActionNoteDto actions)
         {
-            _context.ActionNoteDto.Add(actions);
+            _context.Actions.Add(_mapper.Map<Actions>(actions));
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = actions.ID }, actions);
+        }
+
+        // POST: api/Actions
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Action>> InsertTask(ActionTaskDto actions)
+        {
+            _context.Actions.Add(_mapper.Map<Actions>(actions));
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", new { id = actions.ID }, actions);
+        }
+
+        // POST: api/Actions
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Action>> InsertMessage(ActionMessageDto actions)
+        {
+            _context.Actions.Add(_mapper.Map<Actions>(actions));
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("Get", new { id = actions.ID }, actions);

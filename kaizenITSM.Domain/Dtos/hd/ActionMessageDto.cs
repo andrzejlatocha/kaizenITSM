@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace kaizenITSM.Domain.Dtos.hd
 {
-    public class ActionNoteDto
+    public class ActionMessageDto
     {
-        public ActionNoteDto(int TicketID)
+        public ActionMessageDto(int TicketID)
         {
             this.TicketID = TicketID;
-            this.ActionTypeID = 2;
+            this.ActionTypeID = 1;
             this.Status = "A";
         }
 
@@ -18,6 +18,9 @@ namespace kaizenITSM.Domain.Dtos.hd
         public int TicketID { get; set; }
         public int UserID { get; set; }
         public int ActionTypeID { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
         public string Information { get; set; }
         public DateTime Date { get; set; }
         public string Status { get; set; }
