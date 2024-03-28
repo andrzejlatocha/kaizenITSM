@@ -6,7 +6,7 @@
 @using kaizenITSM.Blazor.Components.Pages.account
 
 <div>
-    <FluentLayout Style="height: 100%; ">
+    <FluentLayout>
         <FluentHeader>
             <MainHeader />
         </FluentHeader>
@@ -24,10 +24,14 @@
                 </AuthorizeView>
             </FluentNavMenu>
             <FluentBodyContent>
-                <div class="row vh-max">
+                <div class="row">
                     <AuthorizeView>
                         <Authorized>
-                            @Body
+                            <div class="row vh-100">
+                                <div class="col-12 p-5">
+                                    @Body
+                                </div>
+                            </div>                            
                         </Authorized>
                         <NotAuthorized>
                             <div class="row vh-100">

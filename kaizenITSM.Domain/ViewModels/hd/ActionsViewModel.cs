@@ -7,7 +7,7 @@ namespace kaizenITSM.Domain.ViewModels.hd
     [Table("vActionsList", Schema = "hd")]
     public class ActionsViewModel
     {
-        public Guid ID { get; set; }
+        public int ID { get; set; }
         public int TicketID { get; set; }
         public int UserID { get; set; }
         public string User { get; set; }
